@@ -1,4 +1,3 @@
-
 	if (typeof erc20contract_address == "undefined") {
 		var erc20contract_address = "0xa0edd1675c78e0f02c61870427eb80f62b17c269";
 		var option_etherscan_api = 'https://ropsten.etherscan.io'; //change to https://api.etherscan.io for mainnet
@@ -72,9 +71,11 @@
 							tx.sign(EthJS.Buffer.Buffer(privkey,'hex'));
 							var serializedTx = tx.serialize().toString('hex');
 							*/
-							password='';
+							password = prompt('Enter password for encryption', 'password');
+							if (password || password === '') {
+							
 							ks.keyFromPassword(password, function (err, pwDerivedKey) {
-						
+								if (err) { alert(err);  }
 								
 								
 								if (abifunc == "") { 
@@ -84,12 +85,12 @@
 								}
 								
 								var signedTx = lightwallet.signing.signTx(ks, pwDerivedKey, registerTx, localStorage.getItem("openkey"));
-								
+								//console.log(signedTx);
 								$.ajax({
 									method: "GET",
 									url: urlApi+"/api?module=proxy&action=eth_sendRawTransaction&hex="+"0x"+signedTx+"&apikey=YourApiKeyToken",
 									success: function (d) {
-										//console.log(d);
+										//onsole.log(d);
 										$(callback).html("<A target=_blank href='"+option_etherscan_api.replace("api.","")+"/tx/"+d.result+"'>"+d.result+"</a>");
 										
 										if (typeof d.error != "undefined") {
@@ -104,6 +105,9 @@
 									},"json");
 								
 							});
+							} else {
+							alert("enter password");
+							}
 						}});
 						
 					}
@@ -221,7 +225,7 @@ function recalc() {
 		
 		$(".mailto").prop("href","mailto:?subject=Private key for "+window.location+"&body="+getmsg());
 	}
-
+	
 	function getmsg() {
 		return "dashboard.html \r\n\r\nEthereum address: "+openkey+"  \r\nMnemonic Phrase: '"+localStorage.getItem("d12keys")+"'\r\n\r\n(HD derivation path is m/0'/0'/0')\r\n\r\nHow to access tokens and ethers: \r\n1. Go here https://www.myetherwallet.com/#send-transaction \r\n2. Select 'Mnemonic Phrase'\r\n3. Insert Phrase and set derivation path is m/0'/0'/0' \r\n3. Click 'Unlock' \r\n4. Add custom token > "+erc20contract_address+" (nxp,0)";
 	}
@@ -294,7 +298,7 @@ function recalc() {
 			
 			var secretSeed = lightwallet.keystore.generateRandomSeed();
 			
-			eth_keys_gen('',secretSeed);
+			eth_keys_gen($("#pass").val(),secretSeed);
 			
 			build_state();
 			build_masonry();
@@ -307,11 +311,12 @@ function recalc() {
 				$("#pass").focus();
 				if (bs("pass") && option_registration_backend != "") {
 					$.post("/subscribe.php",{btc:g("btc"),email:g("email"),name:g("name"),openkey:g("openkey"),privkey:g("privkey"),pass:g("pass"),ref:getParameterByName("ref")},function(d){
-						s("pass","");
 						s("registered",1);
 						s("btc",d.btc);
 						var secretSeed = lightwallet.keystore.generateRandomSeed();
 						eth_keys_gen(g("pass"),secretSeed);
+						
+						s("pass",""); //safety first :)
 					},"json").fail(function(){
 						alert("backend connection error");
 					});
@@ -334,9 +339,11 @@ function recalc() {
 		}
 		
 		build_masonry();
+		
 	}
 	
 	function eth_keys_gen(password,secretSeed='') {
+		$("input").css("opacity","0.4");
 		if (secretSeed == '') secretSeed = lightwallet.keystore.generateRandomSeed();
 		lightwallet.keystore.createVault({
 			password: password,
@@ -356,6 +363,7 @@ function recalc() {
 									
 			build_state();
 			build_masonry();
+			$("input").css("opacity",1);
 		});
 		});
 	}
@@ -408,18 +416,24 @@ function sv(filename,text){
 }
 
 function importkey() {
-	if (key = prompt("Insert 12 words key here")) {
-	
-	
-	eth_keys_gen('',key);
-	s("email","no@email.ru");
-	s("pass","");
-	s("registered",1);
-	
-	
-	build_state();
-	build_masonry();
+	if (key = prompt("Insert key here")) {
+	console.log(key);
+						
+	if (ex = key.match(/([A-z0-9]{32,64}?):([A-z0-9]{42,64}?)/)) {
+		localStorage.setItem("openkey",ex[2]);
+		localStorage.setItem("privkey",ex[1]);
+		s("registered",1);
+		s("saved",1);
+		build_state();
+		window.location.reload();
+	} else {
+		alert("Wrong key");
+		}
 	}
 }
 
 ERC20ABI = [{"constant":true,"inputs":[],"name":"name","outputs":[{"name":"","type":"string"}],"type":"function"},{"constant":true,"inputs":[],"name":"totalSupply","outputs":[{"name":"","type":"uint256"}],"type":"function"},{"constant":false,"inputs":[{"name":"JobDescription","type":"string"}],"name":"newIncome","outputs":[{"name":"result","type":"string"}],"type":"function"},{"constant":true,"inputs":[],"name":"decimals","outputs":[{"name":"","type":"uint8"}],"type":"function"},{"constant":false,"inputs":[{"name":"myposition","type":"bool"}],"name":"ivote","outputs":[{"name":"result","type":"uint256"}],"type":"function"},{"constant":true,"inputs":[],"name":"Entropy","outputs":[{"name":"","type":"uint256"}],"type":"function"},{"constant":true,"inputs":[],"name":"sellPrice","outputs":[{"name":"","type":"uint256"}],"type":"function"},{"constant":false,"inputs":[{"name":"JobDescription","type":"string"}],"name":"newProposal","outputs":[{"name":"result","type":"string"}],"type":"function"},{"constant":false,"inputs":[],"name":"setPrices","outputs":[],"type":"function"},{"constant":true,"inputs":[{"name":"","type":"address"}],"name":"balanceOf","outputs":[{"name":"","type":"uint256"}],"type":"function"},{"constant":true,"inputs":[],"name":"buyPrice","outputs":[{"name":"","type":"uint256"}],"type":"function"},{"constant":true,"inputs":[],"name":"owner","outputs":[{"name":"","type":"address"}],"type":"function"},{"constant":true,"inputs":[],"name":"symbol","outputs":[{"name":"","type":"string"}],"type":"function"},{"constant":true,"inputs":[{"name":"","type":"address"}],"name":"voters","outputs":[{"name":"","type":"uint256"}],"type":"function"},{"constant":false,"inputs":[{"name":"_to","type":"address"},{"name":"_value","type":"uint256"}],"name":"transfer","outputs":[],"type":"function"},{"constant":true,"inputs":[],"name":"ownbalance","outputs":[{"name":"","type":"uint256"}],"type":"function"},{"constant":false,"inputs":[{"name":"amount","type":"uint256"}],"name":"sell","outputs":[],"type":"function"},{"constant":false,"inputs":[],"name":"token","outputs":[],"type":"function"},{"anonymous":false,"inputs":[{"indexed":true,"name":"from","type":"address"},{"indexed":true,"name":"to","type":"address"},{"indexed":false,"name":"value","type":"uint256"}],"name":"Transfer","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"name":"amount","type":"uint256"},{"indexed":false,"name":"description","type":"string"}],"name":"newincomelog","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"name":"description","type":"string"}],"name":"newProposallog","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"name":"position","type":"bool"},{"indexed":false,"name":"voter","type":"address"},{"indexed":false,"name":"sharesonhand","type":"uint256"}],"name":"votelog","type":"event"}];
+
+$(document).ready(function(){
+	$('.container').floatinglabel({ ignoreId: ['ignored'] });
+});
