@@ -1,7 +1,8 @@
 	if (typeof erc20contract_address == "undefined") {
-		var erc20contract_address = "0xa0edd1675c78e0f02c61870427eb80f62b17c269";
-		var option_etherscan_api = 'https://ropsten.etherscan.io'; //change to https://api.etherscan.io for mainnet
-		var option_registration_enabled = true;
+		var erc20contract_address = "0xA0EDD1675c78E0F02C61870427eb80f62B17c269";
+		var option_etherscan_api = 'https://api.etherscan.io'; //change to https://api.etherscan.io for mainnet
+		var option_etherscan_api_key = 'QSUZ77YJZ2H68K6SJKRZSAP7ERYJS51893';
+		var option_registration_enabled = false;
 		var option_registration_backend = '';///'subscribe.php'; //you can use remote address like https://yoursite.com/subscribe.php
 		var option_recive_btc = ''; //reserved for future
 	}
@@ -14,7 +15,7 @@
 	var _balance;
 	function try2buy (amounteth) { 
 		$("#consolebuy").html('.:...::');
-		if (_balance < parseFloat(amounteth)+parseFloat(0.02)) {
+		if (_balance < parseFloat(amounteth)+parseFloat(0.00005)) {
 			$("#consolebuy").html("You need "+amounteth+"+0.02 ETH on balance for this operation");
 		} else {
 			
@@ -52,7 +53,7 @@
 					console.log("sendRwTr");
 					$.ajax({
 					type: "POST",
-						url: option_etherscan_api+"/api?module=proxy&action=eth_getTransactionCount&address="+openkey+"&tag=latest&apikey=YourApiKeyToken",
+						url: option_etherscan_api+"/api?module=proxy&action=eth_getTransactionCount&address="+openkey+"&tag=latest&apikey="+option_etherscan_api_key,
 						dataType: 'json',
 						async: false,
 						success: function (d) {
@@ -61,8 +62,8 @@
 							var options = {};
 							options.nonce = d.result;
 							options.to = to;
-							options.gasPrice="0x737be7600";//web3.toHex('31000000000');
-							options.gasLimit=0x927c0; //web3.toHex('600000');
+							options.gasPrice = web3.toHex('5000000000');
+							options.gasLimit = 0x927c0; //web3.toHex('600000');
 							options.value = value1*1000000000000000000;
 							
 							
@@ -88,7 +89,7 @@
 								//console.log(signedTx);
 								$.ajax({
 									method: "GET",
-									url: urlApi+"/api?module=proxy&action=eth_sendRawTransaction&hex="+"0x"+signedTx+"&apikey=YourApiKeyToken",
+									url: urlApi+"/api?module=proxy&action=eth_sendRawTransaction&hex="+"0x"+signedTx+"&apikey="+option_etherscan_api_key,
 									success: function (d) {
 										//onsole.log(d);
 										$(callback).html("<A target=_blank href='"+option_etherscan_api.replace("api.","")+"/tx/"+d.result+"'>"+d.result+"</a>");
@@ -144,7 +145,7 @@
 							
 					 $.ajax({
 						type: "GET", 
-						url: urlApi+"/api?module=account&action=balance&address="+openkey+"&tag=latest&apikey=YourApiKeyToken", 
+						url: urlApi+"/api?module=account&action=balance&address="+openkey+"&tag=latest&apikey="+option_etherscan_api_key, 
 						dataType: 'json', 
 						async: false,
 							 
@@ -160,10 +161,11 @@
 					
 					          }
 					      });
-				
+
+//						url: urlApi+"/api?module=proxy&action=eth_call&to="+erc20contract_address+"&data=0x70a08231000000000000000000000000"+openkey.replace('0x','')+"&tag=latest&apikey="+option_etherscan_api_key, 
 						$.ajax({
 							type: "GET", 
-							url: urlApi+"/api?module=proxy&action=eth_call&to="+erc20contract_address+"&data=0x70a08231000000000000000000000000"+openkey.replace('0x','')+"&tag=latest&apikey=YourApiKeyToken", 
+							url: urlApi+"/api?module=account&action=tokenbalance&contractaddress="+erc20contract_address+"&address="+openkey+"&tag=latest&apikey="+option_etherscan_api_key, 
 							dataType: 'json', 
 							async: false, 
 							
@@ -179,19 +181,17 @@
 								if (parseInt(d.result,16)>0) {
 									// $(".onlyhavetoken").show();
 									// $(".onlynohavetoken").hide();
-									
 								}
 					          }
 					      });
 				
 				
-					$.get("https://api.etherscan.io/api?module=transaction&action=getstatus&txhash="+openkey+"&apikey=YourApiKeyToken",function(d){
+					$.get("https://api.etherscan.io/api?module=transaction&action=getstatus&txhash="+openkey+"&apikey="+option_etherscan_api_key,function(d){
 						console.log(d);
 					});
 					rebuild_buttons();
 					if ($("#openkey").val() == '0x') $("#openkey").val(openkey);
-					
-					
+
 				}
 				
 				
@@ -359,8 +359,9 @@ function recalc() {
 			localStorage.setItem("isreg", 1);
 			localStorage.setItem("openkey", "0x" + addr);
 			localStorage.setItem("d12keys", secretSeed);
+
 			console.log(password, pwDerivedKey);
-									
+
 			build_state();
 			build_masonry();
 			$("input").css("opacity",1);
@@ -421,7 +422,7 @@ function importkey() {
 						
 	if (ex = key.match(/([A-z0-9]{32,64}?):([A-z0-9]{42,64}?)/)) {
 		localStorage.setItem("openkey",ex[2]);
-		localStorage.setItem("privkey",ex[1]);
+		//localStorage.setItem("privkey",ex[1]);
 		s("registered",1);
 		s("saved",1);
 		build_state();

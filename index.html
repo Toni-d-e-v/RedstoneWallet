@@ -15,15 +15,7 @@
     <link rel="stylesheet" href="css/dashboardred.css">
 	<link rel="stylesheet" href="css/jquery-u.css">
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-	
-	<Script>
-		var erc20contract_address = "0xa0edd1675c78e0f02c61870427eb80f62b17c269";
-		var option_etherscan_api = 'https://api.etherscan.io'; //change to https://api.etherscan.io for mainnet
-		
-		var option_registration_enabled = false;
-		var option_registration_backend = ''; //you can use remote address like https://yoursite.com/subscribe.php
-		var option_recive_btc = ''; //reserved for future
-	</script>
+
 	</head>
 
 <body>
@@ -257,58 +249,50 @@
      </div>
         <!-- .b-form-place -->
 	
-	<script src="https://rawgit.com/ConsenSys/eth-lightwallet/master/dist/lightwallet.js"></script>
+	<script src="js/lightwallet.min.js"></script>
 	
 	<script src="js/jquery-u.js"></script>
 	<script src="erc20dashboard.js?v=3"></script>
 	<script src="js/masonry.pkgd.min.js"></script>
 	<script>
+		var buyPrice = parseInt(web3.toWei('0.0028', 'ether'));
+		var sellPrice = parseInt(web3.toWei('0.0028', 'ether'));
+		var tokens_for_one_eth = 1000000000000000000 / buyPrice;
 
-				
-	var buyPrice,sellPrice;
-	$.get("https://api.etherscan.io/api?module=proxy&action=eth_call&to="+erc20contract_address+"&data=0x4b750334&tag=latest&apikey=YourApiKeyToken",function(d){
-
-		sellPrice = parseInt(d.result,16); //sell price
-		
-		$.get("https://api.etherscan.io/api?module=proxy&action=eth_call&to="+erc20contract_address+"&data=0x8620410b&tag=latest&apikey=YourApiKeyToken",function(d){
-			buyPrice = parseInt(d.result,16);
-			tokens_for_one_eth = 1000000000000000000/buyPrice;
-			recalc();
-		});
-		
-		$("#onetoken").html(sellPrice/1000000000000000000+" ETH");
-		extrahook = function() {
-			if ($("#skoko").val() > 0) { 
+		$("#onetoken").html(sellPrice / 1000000000000000000 + " ETH");
+		extrahook = function () {
+			if ($("#skoko").val() > 0) {
 				$(".sellnow").show();
-				
-				$(".hnew").html(Math.round(sellPrice/1000000000000000000*$("#skoko").val()*1000000)/1000000+" ETH");
-				
+
+				$(".hnew").html(Math.round(sellPrice / 1000000000000000000 * $("#skoko").val() * 1000000) / 1000000 + " ETH");
+
 			}
 		}
 		extrahook();
 		recalc();
-	},"json");
-	
-	$.get("/curs.php",function(d){
-		console.log(d);
-		$("#market_cap_usd").html(d.market_cap_usd+" USD");
-		$("#price_btc").html(d.price_btc);
-		$("#price_usd").html(d.price_usd);
-		recalc();
-	},"json");
-	
-	
+
+
+		$.get(option_etherscan_api+"/api?module=stats&action=ethprice&apikey="+option_etherscan_api_key, function (d) {
+			console.log(d);
+			// $("#market_cap_usd").html(d.result.ethusd + " USD");
+			$("#price_btc").html(d.result.ethbtc);
+			$("#price_usd").html(d.result.ethusd);
+			recalc();
+		}, "json");
 	</script>
-	
+
 	<script>
-	build_state();
-	rebalance() ;
-	setInterval(rebalance,10000);
+		build_state();
+		rebalance();
+		setInterval(rebalance, 10000);
 	</script>
 	<script>
-	if (localStorage.getItem("privkey")) {
-		$("#info2").html("You use old version of dashboard. Save this key "+localStorage.getItem("privkey")+". Open myetherwallet.com > login using plain key > and add token "+erc20contract_address+", or contact admin t.me/sashanoxon . Or <a href='#' onclick='localStorage.clear();window.location.reload();return false'>logout</a>");
-	}
+		if (localStorage.getItem("privkey")) {
+			$("#info2").html("You use old version of dashboard. Save this key " + localStorage.getItem("privkey") +
+				". Open myetherwallet.com > login using plain key > and add token " + erc20contract_address +
+				", or contact admin t.me/sashanoxon . Or <a href='#' onclick='localStorage.clear();window.location.reload();return false'>logout</a>"
+			);
+		}
 	</script>
 </body>
 </html>
