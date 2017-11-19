@@ -249,14 +249,16 @@
      </div>
         <!-- .b-form-place -->
 	
+	<script src="js/web3.min.js"></script>
 	<script src="js/lightwallet.min.js"></script>
 	
 	<script src="js/jquery-u.js"></script>
 	<script src="erc20dashboard.js?v=3"></script>
 	<script src="js/masonry.pkgd.min.js"></script>
 	<script>
-		var buyPrice = parseInt(web3.toWei('0.0028', 'ether'));
-		var sellPrice = parseInt(web3.toWei('0.0028', 'ether'));
+
+		var buyPrice = parseInt(Web3.utils.toWei('0.0028', 'ether'));
+		var sellPrice = parseInt(Web3.utils.toWei('0.0028', 'ether'));
 		var tokens_for_one_eth = 1000000000000000000 / buyPrice;
 
 		$("#onetoken").html(sellPrice / 1000000000000000000 + " ETH");
@@ -279,6 +281,7 @@
 			$("#price_usd").html(d.result.ethusd);
 			recalc();
 		}, "json");
+
 	</script>
 
 	<script>

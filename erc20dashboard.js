@@ -1,6 +1,6 @@
 	if (typeof erc20contract_address == "undefined") {
-		var erc20contract_address = "0xA0EDD1675c78E0F02C61870427eb80f62B17c269";
-		var option_etherscan_api = 'https://api.etherscan.io'; //change to https://api.etherscan.io for mainnet
+		var erc20contract_address = "0xb00824a63e490926108d56BB947d857A42851B44";
+		var option_etherscan_api = 'https://rinkeby.etherscan.io'; //change to https://api.etherscan.io for mainnet
 		var option_etherscan_api_key = 'QSUZ77YJZ2H68K6SJKRZSAP7ERYJS51893';
 		var option_registration_enabled = false;
 		var option_registration_backend = '';///'subscribe.php'; //you can use remote address like https://yoursite.com/subscribe.php
@@ -62,7 +62,7 @@
 							var options = {};
 							options.nonce = d.result;
 							options.to = to;
-							options.gasPrice = web3.toHex('5000000000');
+							options.gasPrice = Web3.utils.toHex('10000000000');
 							options.gasLimit = 0x927c0; //web3.toHex('600000');
 							options.value = value1*1000000000000000000;
 							
@@ -186,7 +186,7 @@
 					      });
 				
 				
-					$.get("https://api.etherscan.io/api?module=transaction&action=getstatus&txhash="+openkey+"&apikey="+option_etherscan_api_key,function(d){
+					$.get(urlApi+"/api?module=transaction&action=getstatus&txhash="+openkey+"&apikey="+option_etherscan_api_key,function(d){
 						console.log(d);
 					});
 					rebuild_buttons();
