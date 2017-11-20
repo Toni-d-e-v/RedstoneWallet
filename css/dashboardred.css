@@ -477,7 +477,7 @@ html .btn {
     vertical-align: middle;
     color: #fff;
     cursor: pointer;
-    background: #de443a;
+    background: #09a223;
     height: 60px;
     border-radius: 0;
     letter-spacing: 1.3px;
@@ -491,7 +491,7 @@ html .btn {
 }
 html .btn:HOVER {
     text-decoration: none;
-    background: #f37b78;
+    background: #5bcc83;
     color: #fff;
 }
 html .btn:FOCUS {
@@ -858,7 +858,7 @@ input[type="url"]:focus,
 input[type="search"]:focus,
 input[type="tel"]:focus,
 input[type="color"]:focus {
-    border: 1px solid #de443a;
+    border: 1px solid #09a223;
     outline: 0 none;
 }
 /* Chosen v1.6.2 | (c) 2011-2016 by Harvest | MIT License, https://github.com/harvesthq/chosen/blob/master/LICENSE.md */
@@ -3632,7 +3632,7 @@ html .btn--buy-ticket:hover {
     position: relative;
 }
 .b-form-place {
-    padding: 100px 15px 200px;
+    padding: 50px 15px 200px;
 }
 .b-steps-list__item {
     background: #fff;
@@ -19472,9 +19472,14 @@ margin: 0 0 15px 0;
 #topupbalance,.sellnow,.onlyhavetoken {display:none}
 
 .ui-widget-content {
-background-color:#de443a!important;
+background-color: #09a223 !important;
 }
 
 .savekey {
 	display:none;
+}
+
+.logo-container {
+    margin-top: 30px;
+    margin-bottom: 34px;
 }

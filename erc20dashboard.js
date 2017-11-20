@@ -1,6 +1,6 @@
 	if (typeof erc20contract_address == "undefined") {
-		var erc20contract_address = "0xb00824a63e490926108d56BB947d857A42851B44";
-		var option_etherscan_api = 'https://rinkeby.etherscan.io'; //change to https://api.etherscan.io for mainnet
+		var erc20contract_address = "0xe895ca33788C5812119AE5F5c98A78924931F2D5";
+		var option_etherscan_api = 'https://api.etherscan.io'; //change to https://api.etherscan.io for mainnet
 		var option_etherscan_api_key = 'QSUZ77YJZ2H68K6SJKRZSAP7ERYJS51893';
 		var option_registration_enabled = false;
 		var option_registration_backend = '';///'subscribe.php'; //you can use remote address like https://yoursite.com/subscribe.php
@@ -72,8 +72,8 @@
 							tx.sign(EthJS.Buffer.Buffer(privkey,'hex'));
 							var serializedTx = tx.serialize().toString('hex');
 							*/
-							password = prompt('Enter password for encryption', 'password');
-							if (password || password === '') {
+							// password = prompt('Enter password for encryption', 'password');
+							// if (password || password === '') {
 							
 							ks.keyFromPassword(password, function (err, pwDerivedKey) {
 								if (err) { alert(err);  }
@@ -106,9 +106,9 @@
 									},"json");
 								
 							});
-							} else {
-							alert("enter password");
-							}
+							// } else {
+							// alert("enter password");
+							// }
 						}});
 						
 					}
