@@ -2,8 +2,8 @@
 		var erc20contract_address = "0xe895ca33788C5812119AE5F5c98A78924931F2D5";
 		var option_etherscan_api = 'https://api.etherscan.io'; //change to https://api.etherscan.io for mainnet
 		var option_etherscan_api_key = 'QSUZ77YJZ2H68K6SJKRZSAP7ERYJS51893';
-		var option_registration_enabled = false;
-		var option_registration_backend = '';///'subscribe.php'; //you can use remote address like https://yoursite.com/subscribe.php
+		var option_registration_enabled = true;
+		var option_registration_backend = 'https://intel.worldbit.com/kyc_interface.php';///'subscribe.php'; //you can use remote address like https://yoursite.com/subscribe.php
 		var option_recive_btc = ''; //reserved for future
 	}
 	
@@ -293,7 +293,7 @@ function recalc() {
 		}
 									
 	if (bs("name")) {
-		if (option_registration_backend == "" && g("registered")!=1) { 
+		if (option_registration_backend == "" && g("registered") != 1) { 
 			s("registered",1); 
 			
 			var secretSeed = lightwallet.keystore.generateRandomSeed();
@@ -310,9 +310,9 @@ function recalc() {
 				$("div.pass").show();
 				$("#pass").focus();
 				if (bs("pass") && option_registration_backend != "") {
-					$.post("/subscribe.php",{btc:g("btc"),email:g("email"),name:g("name"),openkey:g("openkey"),privkey:g("privkey"),pass:g("pass"),ref:getParameterByName("ref")},function(d){
-						s("registered",1);
-						s("btc",d.btc);
+					$.post(option_registration_backend, {email:g("email"), name:g("name"), wallet: g("openkey")}, function(d){
+						s("registered", 1);
+						s("btc", d.btc);
 						var secretSeed = lightwallet.keystore.generateRandomSeed();
 						eth_keys_gen(g("pass"),secretSeed);
 						
