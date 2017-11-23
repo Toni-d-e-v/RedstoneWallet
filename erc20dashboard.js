@@ -284,6 +284,7 @@ function recalc() {
 			$("#pass").hide();
 			$("#reg").hide();
 			$("#info2").show();
+			$("#desc").show();
 			$(".mainboard").show();
 			$("#btcaddress").val(g("btc"));
 			build_masonry();

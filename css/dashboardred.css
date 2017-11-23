@@ -19485,5 +19485,7 @@ background-color: #09a223 !important;
 }
 
 .wallet-desc {
-    padding: 0 36px 5px 36px;
+    padding: 0 36px 0 36px;
+    width: 1000px;
+    margin: 60px auto 0 auto;
 }

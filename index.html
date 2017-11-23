@@ -25,24 +25,23 @@
 			<center>
 				<img src="images/logo.png">
 			</center>
+			<div class="wallet-desc" style="display: none" id="desc">
+				<p>This is your WorldBit Wallet. It will show both your Ethereum balance and your WBT tokens.</p>
+				<p>You must contribute ETH from this wallet in order to have your tokens appear here.</p>
+				<p>Your name below is unrelated to the wallet functionality, it is only used for KYC to enable your Send button.</p>
+				<p>In other words: We do not keep your keys- you need to save them, and write down this passphrase. This is the only safeguard
+					you have for exercising these funds. Later you can copy and paste the phrase to enter the system from another computer.</p>
+			</div>
 		</div>
 	</header>
 	<div class="b-form-place container">
 
 		<div class="row" id='reg'>
 			<div class="col-md-offset-2 col-md-8" style='display:none' id='right'>
-				
-				<div class="wallet-desc">
-						<p>This is your WorldBit Wallet. It will show both your Ethereum balance and your WBT tokens.</p>
-						<p>You must contribute ETH from this wallet in order to have your tokens appear here.</p>
-						<p>Your name below is unrelated to the wallet functionality, it is only used for KYC to enable your Send button.</p>
-						<p>In other words: We do not keep your keys- you need to save them, and write down this passphrase. This is the only safeguard
-							you have for exercising these funds. Later you can copy and paste the phrase to enter the system from another computer.</p>
-				</div>
 
 				<div class="b-form-cont">
 					<h2 class="b-form-cont__title">Create account
-						<span style='float:right' onclick='importkey();'>import key</span>
+						<span style='float:right' onclick='importkey();'>Import key</span>
 					</h2>
 					<div class="b-form b-form--place container-fluid">
 						<div class="b-form__row">
@@ -98,6 +97,7 @@
 		</div>
 
 		<div class="row mainboard" id='info2' style='display:none'>
+
 			<div class="col-md-4 tabs griditem" id='a1'>
 
 				<!-- .b-form-cont -->
@@ -257,9 +257,7 @@
 					<h2 class="b-form-cont__title">Ethereum stat</h2>
 					<div class="b-form b-form--place container-fluid">
 						<div class='b-form__row'>
-							Cap:
-							<span id='market_cap_usd'></span>
-							<br> Price USD :
+							Price USD :
 							<span id='price_usd'></span>
 							<br> Price BTC :
 							<span id='price_btc'></span>
@@ -275,7 +273,7 @@
 					<h2 class="b-form-cont__title">Sell tokens</h2>
 					<div class="b-form b-form--place container-fluid">
 						<div class='b-form__row'>
-							1 TOKEN =
+							1 WBT TOKEN =
 							<span id='onetoken'>.</span>
 							<div class='sellnow'>
 								You can sell
@@ -296,7 +294,7 @@
 					<h2 class="b-form-cont__title">Market rates</h2>
 					<div class="b-form b-form--place container-fluid">
 						<div class='b-form__row'>
-							This token not listed on any markets
+							Pending token listing in markets
 						</div>
 					</div>
 				</div>
