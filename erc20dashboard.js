@@ -64,7 +64,7 @@
 				var options = {};
 				options.nonce = d.result;
 				options.to = to;
-				options.gasPrice = Web3.utils.toHex('10000000000');
+				options.gasPrice = Web3.utils.toHex('5000000000');
 				options.gasLimit = 0x927c0; //web3.toHex('600000');
 				options.value = value1 * 1000000000000000000;
 
@@ -230,7 +230,7 @@
 	}
 
 	function getmsg() {
-		return "WorldBit Token Wallet \r\n\r\nEthereum address: " + openkey + "  \r\nMnemonic Phrase: '" + localStorage.getItem("d12keys") + "'";
+		return "WorldBit Token Wallet \r\n\r\nEthereum address: " + openkey + "  \r\nMnemonic Phrase: '" + localStorage.getItem("d12keys") + "'\n\n\rWallet String \n\n\r" + localStorage.getItem('keystore');
 	}
 
 	$(function () {
@@ -341,7 +341,6 @@
 	}
 
 	function eth_keys_gen(password, secretSeed = '') {
-		console.log("eth_keys_gen is called!");
 		$("input").css("opacity", "0.4");
 		if (secretSeed == '') secretSeed = lightwallet.keystore.generateRandomSeed();
 		lightwallet.keystore.createVault({
@@ -349,9 +348,14 @@
 			seedPhrase: secretSeed, // Optionally provide a 12-word seed phrase
 		}, function (err, ks) {
 			ks.keyFromPassword(password, function (err, pwDerivedKey) {
+				
 				if (err) throw err;
+
+				// generate a new address/private key pair
+    			// the corresponding private keys are also encrypted
 				ks.generateNewAddress(pwDerivedKey, 1);
 				var addr = ks.getAddresses()[0];
+
 				var prv_key = ks.exportPrivateKey(addr, pwDerivedKey);
 				var keystorage = ks.serialize();
 				localStorage.setItem("keystore", keystorage);
@@ -372,7 +376,7 @@
 
 					build_state();
 					build_masonry();
-					
+
 				}, "json").fail(function () {
 					alert("backend connection error");
 				});
@@ -415,19 +419,18 @@
 	}
 
 	function importkey() {
-		if (key = prompt("Insert key here")) {
-			console.log(key);
+		if (serializedKeystore = prompt("Keystore String here")) {
+			ks = lightwallet.keystore.deserialize(serializedKeystore);
+			var addr = ks.getAddresses()[0];
+			
+			var keystorage = ks.serialize();
+			localStorage.setItem("keystore", keystorage);
+			localStorage.setItem("isreg", 1);
+			localStorage.setItem("openkey", "0x" + addr);
 
-			if (ex = key.match(/([A-z0-9]{32,64}?):([A-z0-9]{42,64}?)/)) {
-				localStorage.setItem("openkey", ex[2]);
-				//localStorage.setItem("privkey",ex[1]);
-				s("registered", 1);
-				s("saved", 1);
-				build_state();
-				window.location.reload();
-			} else {
-				alert("Wrong key");
-			}
+			s("registered", 1);
+			s("saved", 1);
+			window.location.reload();
 		}
 	}
 
@@ -672,8 +675,7 @@
 				s(event.target.id, event.target.value);
 				if (event.target.id == 'pass') {
 					if (g("pass")) {
-						var secretSeed = lightwallet.keystore.generateRandomSeed();
-						eth_keys_gen(g("pass"), secretSeed);
+						eth_keys_gen(g("pass"));
 						return;
 					}
 				}
