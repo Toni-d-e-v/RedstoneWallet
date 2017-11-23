@@ -72,8 +72,8 @@
 							tx.sign(EthJS.Buffer.Buffer(privkey,'hex'));
 							var serializedTx = tx.serialize().toString('hex');
 							*/
-							// password = prompt('Enter password for encryption', 'password');
-							// if (password || password === '') {
+							password = prompt('Enter password for encryption', 'password');
+							if (password || password === '') {
 							
 							ks.keyFromPassword(password, function (err, pwDerivedKey) {
 								if (err) { alert(err);  }
@@ -106,9 +106,9 @@
 									},"json");
 								
 							});
-							// } else {
-							// alert("enter password");
-							// }
+							} else {
+								alert("enter password");
+							}
 						}});
 						
 					}
@@ -146,8 +146,7 @@
 					 $.ajax({
 						type: "GET", 
 						url: urlApi+"/api?module=account&action=balance&address="+openkey+"&tag=latest&apikey="+option_etherscan_api_key, 
-						dataType: 'json', 
-						async: false,
+						dataType: 'json',
 							 
 							 success: function (d) {
 								
@@ -167,7 +166,6 @@
 							type: "GET", 
 							url: urlApi+"/api?module=account&action=tokenbalance&contractaddress="+erc20contract_address+"&address="+openkey+"&tag=latest&apikey="+option_etherscan_api_key, 
 							dataType: 'json', 
-							async: false, 
 							
 							 success: function (d) {
 								
