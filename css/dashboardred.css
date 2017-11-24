@@ -19481,11 +19481,15 @@ background-color: #09a223 !important;
 
 .logo-container {
     margin-top: 30px;
-    margin-bottom: 34px;
 }
 
 .wallet-desc {
     padding: 0 36px 0 36px;
     width: 1000px;
+    margin: 60px auto 0 auto;
+}
+
+.login-desc {
+    padding: 0 36px 0 36px;
     margin: 60px auto 0 auto;
 }

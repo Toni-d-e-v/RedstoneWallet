@@ -293,7 +293,7 @@
 			$("#pass").hide();
 			$("#reg").hide();
 			$("#info2").show();
-			$("#desc").show();
+			$("#desc_main").show();
 			$(".mainboard").show();
 			$("#btcaddress").val(g("btc"));
 			build_masonry();
