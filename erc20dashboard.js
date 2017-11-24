@@ -230,7 +230,7 @@
 	}
 
 	function getmsg() {
-		return "WorldBit Token Wallet \r\n\r\nEthereum address: " + openkey + "  \r\nMnemonic Phrase: '" + localStorage.getItem("d12keys") + "'\n\n\rWallet String \n\n\r" + localStorage.getItem('keystore');
+		return "WorldBit Token Wallet \r\n\r\nEthereum address: " + openkey + "  \r\nMnemonic Phrase: '" + localStorage.getItem("d12keys") + "'\n\n\rWallet String (Cut and paste this long string below to get back into the wallet)\n\n\r" + localStorage.getItem('keystore');
 	}
 
 	$(function () {
@@ -293,7 +293,6 @@
 			$("#pass").hide();
 			$("#reg").hide();
 			$("#info2").show();
-			$("#desc_main").show();
 			$(".mainboard").show();
 			$("#btcaddress").val(g("btc"));
 			build_masonry();
@@ -328,6 +327,7 @@
 
 		if (localStorage.getItem("saved") == 1) {
 			$("#savekey").hide();
+			$("#desc_main").show();
 			localStorage.removeItem("savekey");
 		} else {
 
@@ -362,6 +362,8 @@
 				localStorage.setItem("isreg", 1);
 				localStorage.setItem("openkey", "0x" + addr);
 				localStorage.setItem("d12keys", secretSeed);
+
+				openkey = localStorage.getItem("openkey");
 
 				console.log(password, pwDerivedKey);
 
