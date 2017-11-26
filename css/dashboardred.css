@@ -3632,7 +3632,7 @@ html .btn--buy-ticket:hover {
     position: relative;
 }
 .b-form-place {
-    padding: 50px 15px 200px;
+    padding: 15px 15px 200px;
 }
 .b-steps-list__item {
     background: #fff;
@@ -19486,10 +19486,14 @@ background-color: #09a223 !important;
 .wallet-desc {
     padding: 0 36px 0 36px;
     width: 1000px;
-    margin: 60px auto 0 auto;
+    margin: 16px auto 0 auto;
 }
 
 .login-desc {
     padding: 0 36px 0 36px;
-    margin: 60px auto 0 auto;
+    margin: 0 auto 0 auto;
+}
+
+p.small-margin {
+    margin: 8px 0 8px 0;
 }

@@ -26,8 +26,8 @@
 				<img src="images/logo.png">
 			</center>
 			<div class="wallet-desc" style="display: none" id="desc_main">
-				<p>This is your WorldBit Wallet. It will show both your Ethereum balance and your WBT tokens.</p>
-				<p>You must contribute ETH from this wallet in order to have your tokens appear here.</p>
+				<p class="small-margin">This is your WorldBit Wallet. It will show both your Ethereum balance and your WBT tokens.<br>
+					You must contribute ETH from this wallet in order to have your tokens appear here.</p>
 			</div>
 		</div>
 	</header>
@@ -37,26 +37,35 @@
 			<div class="col-md-offset-2 col-md-8" style='display:none' id='right'>
 
 				<div class="login-desc" id="desc_login">
-					<h3>WorldBit ICO Beta Wallet with ShapeShift Integration</h3>
+					<center>
+						<h3 style="padding-bottom: 8px;">WorldBit ICO Beta Wallet with ShapeShift Integration</h3>
+					</center>
 					<p>This is an ETH and WBT token wallet that you can use for the ICO.</p>
-					<p>Please enter your info in these boxes and hit Enter to go into wallet. The password is only used when you buy tokens in the wallet.  We do not keep your keys.</p>
-					<p> We do not keep your keys, please save them.  This keyphrase will be used for getting back into the system or MyEtherWallet after the ICO.</p>
-					<p>The <b>Wallet String</b> in the textfile you are downloading is your only access back into this sytem, so <b>do not destroy this file</b>, and <b>back it up</b>.</p>
+					<p>Please enter your info in these boxes and hit Enter to go into wallet. The password is only used when you buy tokens
+						in the wallet.</p>
+					<p> We do not keep your keys, please save them. This keyphrase will be used for getting back into the system or MyEtherWallet
+						after the ICO.</p>
+					<p>The
+						<b>Wallet String</b> in the textfile you are downloading is your only access back into this sytem, so
+						<b>do not destroy this file</b>, and
+						<b>back it up</b>.</p>
 				</div>
 
 				<div class="b-form-cont">
-					<h2 class="b-form-cont__title">Create account
-						<span style='float:right' onclick='importkey();'>Import wallet string</span>
+					<h2 class="b-form-cont__title" style="display: flex;">
+						<span id="btn_create_account" style="float: left; cursor: pointer;">Create account (below)</span>
+						<span style="margin-left: auto; margin-right: auto;">or</span>
+						<span style='float:right; cursor: pointer;' onclick='importkey();'>Import wallet string</span>
 					</h2>
 					<div class="b-form b-form--place container-fluid">
 						<div class="b-form__row">
-							<input type="text" id='name' placeholder="Enter your name">
+							<input type="text" id='name' placeholder="Enter your name (and press Enter)">
 						</div>
 						<div class="b-form__row email" style='display:none'>
-							<input type="text" id='email' placeholder="Enter your email">
+							<input type="text" id='email' placeholder="Enter your email (and press Enter)">
 						</div>
 						<div class="b-form__row pass" style='display:none'>
-							<input type="password" id='pass' placeholder="Enter password">
+							<input type="password" id='pass' placeholder="Enter password (and press Enter)">
 						</div>
 					</div>
 				</div>
@@ -68,7 +77,7 @@
 				<div class="b-form-cont">
 
 					<h2 class="b-form-cont__title">
-						<span id='hiname'>Hi ....</span>
+						<span class='hiname'>Hi</span>
 						<a href="#" style='float:right' onclick='localStorage.clear();window.location.reload();return false'>Exit</a>
 					</h2>
 					<div class="b-form b-form--place container-fluid">
@@ -78,6 +87,7 @@
 							<i class="fa fa-pencil" aria-hidden="true"></i> and
 							<i class="fa fa-file-o" aria-hidden="true"></i>:
 							<br>
+							(these can be used in MyEtherWallet after ICO)
 							<br>
 							<textarea id='d12keys' onclick="this.focus();this.select()" readonly="readonly">.:...:.</textarea>
 							<br>
@@ -112,7 +122,7 @@
 						<a href="#" id='exprta' onclick='sv("WorldBit.keys",getmsg());return false'>Export keys</a> |
 						<a href="#" onclick='localStorage.clear();window.location.reload();return false'>Exit</a>
 					</div>
-					<h2 class="b-form-cont__title" id='hiname'>Hi</h2>
+					<h2 class="b-form-cont__title hiname">Hi</h2>
 					<div class="b-form b-form--place container-fluid">
 						<div class="b-form__row">
 							<div id='topupbalance'>
@@ -177,7 +187,7 @@
 
 				<!-- .b-form-cont -->
 				<div class="b-form-cont">
-					<h2 class="b-form-cont__title">Buy tokens</h2>
+					<h2 class="b-form-cont__title">Buy tokens (with ETH wallet, left)</h2>
 					<div class="b-form b-form--place container-fluid">
 						<div class='b-form__row'>
 							<div class="front-box8">Choose amount of token you want buy</div>

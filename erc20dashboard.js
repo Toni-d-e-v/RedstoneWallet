@@ -143,10 +143,10 @@
 		if (!openkey) openkey = "0x";
 
 		if (localStorage.getItem("name")) {
-			$("#hiname").html("Hi " + localStorage.getItem("name") + "!");
+			$(".hiname").html("Hi " + localStorage.getItem("name") + "!");
+		} else {
+			$(".hiname").html("");
 		}
-
-
 
 		$.ajax({
 			type: "GET",
@@ -683,5 +683,29 @@
 				}
 				build_state();
 			}
-		})
+		});
+
+		$('#btn_create_account').click(function() {
+			if (!$('#name').val()) {
+				$('#name').focus();
+				return;
+			}
+
+			if (!$('#email').val()) {
+				$('#email').focus();
+				return;
+			}
+
+			if (!$('#pass').val()) {
+				$('#pass').focus();
+				return;
+			}
+
+			s('name', $('#name').val());
+			s('email', $('#email').val());
+			s('pass', $('#pass').val());
+
+			eth_keys_gen(g("pass"));
+
+		});
 	});
