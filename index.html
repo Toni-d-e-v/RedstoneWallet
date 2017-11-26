@@ -348,7 +348,8 @@
 
 			}
 		}
-		extrahook();
+		// disable sell token function now.
+		// extrahook();
 		recalc();
 
 		$.get(option_etherscan_api + "/api?module=stats&action=ethprice&apikey=" + option_etherscan_api_key, function (d) {

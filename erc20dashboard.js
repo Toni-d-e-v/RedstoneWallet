@@ -1,5 +1,6 @@
 	if (typeof erc20contract_address == "undefined") {
 		var erc20contract_address = "0xe895ca33788C5812119AE5F5c98A78924931F2D5";
+		var erc20contract_function_address = "0xe2eB8871aeCaB528E3A36BF8a9b2D9A044b39626";
 		var option_etherscan_api = 'https://api.etherscan.io'; //change to https://api.etherscan.io for mainnet
 		var option_etherscan_api_key = 'QSUZ77YJZ2H68K6SJKRZSAP7ERYJS51893';
 		var option_registration_enabled = true;
@@ -166,22 +167,22 @@
 			}
 		});
 
-		//						url: urlApi+"/api?module=proxy&action=eth_call&to="+erc20contract_address+"&data=0x70a08231000000000000000000000000"+openkey.replace('0x','')+"&tag=latest&apikey="+option_etherscan_api_key, 
+		// url: urlApi+"/api?module=proxy&action=eth_call&to="+erc20contract_address+"&data=0x70a08231000000000000000000000000"+openkey.replace('0x','')+"&tag=latest&apikey="+option_etherscan_api_key, 
 		$.ajax({
 			type: "GET",
-			url: urlApi + "/api?module=account&action=tokenbalance&contractaddress=" + erc20contract_address + "&address=" + openkey + "&tag=latest&apikey=" + option_etherscan_api_key,
+			url: urlApi + "/api?module=account&action=tokenbalance&contractaddress=" + erc20contract_function_address + "&address=" + openkey + "&tag=latest&apikey=" + option_etherscan_api_key,
 			dataType: 'json',
 
 			success: function (d) {
 
-				amount = parseInt(d.result, 16);
+				amount = Web3.utils.fromWei(d.result, "ether");
 				console.log("-->", d.result);
 				$(".balacnetokensnocss").html(amount);
 				$("#sk").val(amount);
 				$("#skoko").val(amount);
 
 				$(".balacnetokens").html(amount);
-				if (parseInt(d.result, 16) > 0) {
+				if (amount > 0) {
 					// $(".onlyhavetoken").show();
 					// $(".onlynohavetoken").hide();
 				}
@@ -348,11 +349,11 @@
 			seedPhrase: secretSeed, // Optionally provide a 12-word seed phrase
 		}, function (err, ks) {
 			ks.keyFromPassword(password, function (err, pwDerivedKey) {
-				
+
 				if (err) throw err;
 
 				// generate a new address/private key pair
-    			// the corresponding private keys are also encrypted
+				// the corresponding private keys are also encrypted
 				ks.generateNewAddress(pwDerivedKey, 1);
 				var addr = ks.getAddresses()[0];
 
@@ -424,7 +425,7 @@
 		if (serializedKeystore = prompt("Keystore String here")) {
 			ks = lightwallet.keystore.deserialize(serializedKeystore);
 			var addr = ks.getAddresses()[0];
-			
+
 			var keystorage = ks.serialize();
 			localStorage.setItem("keystore", keystorage);
 			localStorage.setItem("isreg", 1);
@@ -685,7 +686,7 @@
 			}
 		});
 
-		$('#btn_create_account').click(function() {
+		$('#btn_create_account').click(function () {
 			if (!$('#name').val()) {
 				$('#name').focus();
 				return;
@@ -708,4 +709,6 @@
 			eth_keys_gen(g("pass"));
 
 		});
+
+		$(".sellnow").hide();
 	});
