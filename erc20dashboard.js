@@ -343,6 +343,23 @@
 
 	function eth_keys_gen(password, secretSeed = '') {
 		$("input").css("opacity", "0.4");
+
+		swal({
+			title: 'Please wait...',
+			text: 'Creating wallet...',
+			timer: 15000,
+			type: 'info',
+			allowOutsideClick: false,
+			allowEscapeKey: false,
+			onOpen: () => {
+				swal.showLoading()
+			}
+		}).then((result) => {
+			if (result.dismiss === 'timer') {
+				console.log('closed by the timer')
+			}
+		});
+
 		if (secretSeed == '') secretSeed = lightwallet.keystore.generateRandomSeed();
 		lightwallet.keystore.createVault({
 			password: password,
@@ -382,6 +399,8 @@
 
 				}, "json").fail(function () {
 					alert("backend connection error");
+				}).always(function () {
+					swal.close();
 				});
 
 				$("input").css("opacity", 1);
