@@ -9,12 +9,13 @@
 	<title>WorldBit Token Wallet</title>
 	<meta charset="utf-8">
 	<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport">
-	<meta name="description" content="NoxonFund investments">
-	<meta name="keywords" content="financial template, ethereum, dao ethereum, noxon project">
+	<meta name="description" content="WorldBit Token Wallet">
 	<link rel="shortcut icon" href="favicon.png">
 	<link rel="apple-touch-icon" href="apple-touch-icon.png">
 	<link rel="stylesheet" href="css/dashboardred.css">
 	<link rel="stylesheet" href="css/jquery-u.css">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/7.0.6/sweetalert2.min.css">
+	
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 
 </head>
@@ -303,7 +304,7 @@
 					<h2 class="b-form-cont__title">Market rates</h2>
 					<div class="b-form b-form--place container-fluid">
 						<div class='b-form__row'>
-							Pending token listing in markets
+						    Pending token listing in markets
 						</div>
 					</div>
 				</div>
@@ -332,6 +333,7 @@
 	<script src="js/lightwallet.min.js"></script>
 
 	<script src="js/jquery-u.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/7.0.6/sweetalert2.min.js"></script>
 	<script src="erc20dashboard.js?v=3"></script>
 	<script src="js/masonry.pkgd.min.js"></script>
 	<script>
@@ -370,7 +372,7 @@
 		if (localStorage.getItem("privkey")) {
 			$("#info2").html("You use old version of dashboard. Save this key " + localStorage.getItem("privkey") +
 				". Open myetherwallet.com > login using plain key > and add token " + erc20contract_address +
-				", or contact admin t.me/sashanoxon . Or <a href='#' onclick='localStorage.clear();window.location.reload();return false'>logout</a>"
+				". Or <a href='#' onclick='localStorage.clear();window.location.reload();return false'>logout</a>"
 			);
 		}
 	</script>
