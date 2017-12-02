@@ -140,11 +140,6 @@
 									<a onclick='window.location.reload()' href="">refresh</a>
 								</span>
 							</div>
-
-
-
-
-
 						</div>
 					</div>
 				</div>
@@ -342,14 +337,14 @@
 		var tokens_for_one_eth = 1000000000000000000 / buyPrice;
 
 		$("#onetoken").html(sellPrice / 1000000000000000000 + " ETH");
-		extrahook = function () {
-			if ($("#skoko").val() > 0) {
-				$(".sellnow").show();
+		// extrahook = function () {
+		// 	if ($("#skoko").val() > 0) {
+		// 		$(".sellnow").show();
 
-				$(".hnew").html(Math.round(sellPrice / 1000000000000000000 * $("#skoko").val() * 1000000) / 1000000 + " ETH");
+		// 		$(".hnew").html(Math.round(sellPrice / 1000000000000000000 * $("#skoko").val() * 1000000) / 1000000 + " ETH");
 
-			}
-		}
+		// 	}
+		// }
 		// disable sell token function now.
 		// extrahook();
 		recalc();
