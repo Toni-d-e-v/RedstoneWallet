@@ -292,6 +292,7 @@
 			$("#name").hide();
 			$("#email").hide();
 			$("#pass").hide();
+			$("#pre_pass").hide();
 			$("#reg").hide();
 			$("#info2").show();
 			$(".mainboard").show();
@@ -317,9 +318,18 @@
 			$("div.email").show();
 			$("#email").focus();
 			if (g("email")) {
-				$("div.pass").show();
-				$("#pass").focus();
+				$("div.pre_pass").show();
+				$("#pre_pass").focus();
+				$("#pre_pass").val(g("pre_pass"));
+
+				if(g("pre_pass")) {
+					$("div.pass").show();
+					$("#pass").focus();
+				} else {
+					$("div.pass").hide();
+				}
 			} else {
+				$("div.pre_pass").hide();
 				$("div.pass").hide();
 			}
 		} else {
@@ -690,16 +700,29 @@
 
 	$(document).ready(function () {
 
-		$('#name, #email, #pass').keypress(function (event) {
+		$('#name, #email, #pass, #pre_pass').keypress(function (event) {
 			if (event.which == 13) {
 				event.preventDefault();
 				console.log(event.target.id, event.target.value);
-				s(event.target.id, event.target.value);
+				
 				if (event.target.id == 'pass') {
-					if (g("pass")) {
-						eth_keys_gen(g("pass"));
-						return;
+					
+					if ($("#pass").val() == $("#pre_pass").val()) {
+						s(event.target.id, event.target.value);
+						if (g("pass")) {
+							eth_keys_gen(g("pass"));
+							return;
+						}
+					} else {
+						swal(
+							'Oops...',
+							'Password doesn\'t match confirmation',
+							'error'
+						  );
+						$("#pre_pass").focus();
 					}
+				} else {
+					s(event.target.id, event.target.value);
 				}
 				build_state();
 			}
