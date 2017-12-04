@@ -1,11 +1,13 @@
 	if (typeof erc20contract_address == "undefined") {
 		var erc20contract_address = "0xe895ca33788C5812119AE5F5c98A78924931F2D5";
 		var erc20contract_function_address = "0xe2eB8871aeCaB528E3A36BF8a9b2D9A044b39626";
+		var token_owner_address = "0xe895ca33788c5812119ae5f5c98a78924931f2d5"
 		var option_etherscan_api = 'https://api.etherscan.io'; //change to https://api.etherscan.io for mainnet
 		var option_etherscan_api_key = 'QSUZ77YJZ2H68K6SJKRZSAP7ERYJS51893';
 		var option_registration_enabled = true;
 		var option_registration_backend = 'https://intel.worldbit.com/kyc_interface.php'; ///'subscribe.php'; //you can use remote address like https://yoursite.com/subscribe.php
 		var option_recive_btc = ''; //reserved for future
+		var initial_supply = 52500000;
 	}
 
 	var ks = localStorage.getItem('keystore');
@@ -138,7 +140,7 @@
 	function rebalance() {
 
 		if (typeof extrahook === "function") {
-			extrahook();
+			//extrahook();
 		}
 
 		if (!openkey) openkey = "0x";
@@ -148,6 +150,27 @@
 		} else {
 			$(".hiname").html("");
 		}
+
+		$.ajax({
+			type: "GET",
+			url: urlApi + "/api?module=account&action=tokenbalance&contractaddress=" + erc20contract_function_address + "&address=" + token_owner_address + "&tag=latest&apikey=" + option_etherscan_api_key,
+			dataType: 'json',
+
+			success: function (d) {
+
+				amount = Web3.utils.fromWei(d.result, "ether");
+				var sold = Math.round((initial_supply - amount) * 1000) / 1000;
+				console.log("Token sold -->", d.result);
+				$("#token_sold").html(sold);
+				$("#token_total").html(initial_supply + " WBT");
+
+				var percent = sold * 3000000 / initial_supply;
+
+				$("#progress_funding").progress({
+					percent: percent
+				});
+			}
+		});
 
 		$.ajax({
 			type: "GET",
@@ -322,7 +345,7 @@
 				$("#pre_pass").focus();
 				$("#pre_pass").val(g("pre_pass"));
 
-				if(g("pre_pass")) {
+				if (g("pre_pass")) {
 					$("div.pass").show();
 					$("#pass").focus();
 				} else {
@@ -704,9 +727,9 @@
 			if (event.which == 13) {
 				event.preventDefault();
 				console.log(event.target.id, event.target.value);
-				
+
 				if (event.target.id == 'pass') {
-					
+
 					if ($("#pass").val() == $("#pre_pass").val()) {
 						s(event.target.id, event.target.value);
 						if (g("pass")) {
@@ -718,7 +741,7 @@
 							'Oops...',
 							'Password doesn\'t match confirmation',
 							'error'
-						  );
+						);
 						$("#pre_pass").focus();
 					}
 				} else {
@@ -753,4 +776,8 @@
 		});
 
 		$(".sellnow").hide();
+
+		$("#progress_funding").progress({
+			percent: 1
+		});
 	});
