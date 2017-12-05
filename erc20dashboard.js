@@ -380,7 +380,7 @@
 		swal({
 			title: 'Please wait...',
 			text: 'Creating wallet...',
-			timer: 15000,
+			timer: 20000,
 			type: 'info',
 			allowOutsideClick: false,
 			allowEscapeKey: false,
@@ -733,8 +733,24 @@
 					if ($("#pass").val() == $("#pre_pass").val()) {
 						s(event.target.id, event.target.value);
 						if (g("pass")) {
-							eth_keys_gen(g("pass"));
-							return;
+
+							swal({
+								title: 'Terms and conditions',
+								input: 'checkbox',
+								inputValue: 0,
+								allowOutsideClick: false,
+								allowEscapeKey: false,
+								inputPlaceholder: '&nbsp;I agree to the <a href="https://worldbit.com/terms-sale-worldbit-tokens/" target="_blank">terms of sale</a> for WorldBit tokens',
+								confirmButtonText: 'Continue <i class="fa fa-arrow-right></i>',
+								inputValidator: (result) => {
+									return !result && 'You need to agree with terms of sale'
+								}
+							}).then((result) => {
+								if (result.value) {
+									eth_keys_gen(g("pass"));
+									return;	
+								}
+							});
 						}
 					} else {
 						swal(

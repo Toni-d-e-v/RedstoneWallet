@@ -360,22 +360,7 @@ input::-moz-focus-inner {
 input {
     line-height: normal;
 }
-/**
- * It's recommended that you don't attempt to style these elements.
- * Firefox's implementation doesn't respect box-sizing, padding, or width.
- *
- * 1. Address box sizing set to `content-box` in IE 8/9/10.
- * 2. Remove excess padding in IE 8/9/10.
- */
 
-input[type="checkbox"],
-input[type="radio"] {
-    box-sizing: border-box;
-    /* 1 */
-    
-    padding: 0;
-    /* 2 */
-}
 /**
  * Fix the cursor style for Chrome's increment/decrement buttons. For certain
  * `font-size` values of the `input`, it causes the cursor style of the
@@ -596,48 +581,7 @@ textarea {
     color: #000;
     padding: 0.2em 0;
 }
-/* ==========================================================================
-   checkbox
-   ========================================================================== */
 
-input[type=checkbox] {
-    display: none;
-}
-/* to hide the checkbox itself */
-
-input[type=checkbox] + label:before {
-    font-family: FontAwesome;
-    display: inline-block;
-}
-input[type=checkbox] + label:before {
-    content: "\f096";
-    font-size: 23px;
-    color: #de443a;
-    top: 4px;
-    width: 30px;
-    position: relative;
-}
-/* unchecked icon */
-
-input[type=checkbox] + label:before {
-    letter-spacing: 10px;
-}
-/* space between checkbox and label */
-
-input[type=checkbox]:checked + label:before {
-    content: "\f046";
-}
-/* checked icon */
-
-input[type=checkbox]:checked + label:before {
-    letter-spacing: 5px;
-}
-/* allow space for check mark */
-
-.b-checkbox label {
-    font-size: 15px;
-    cursor: pointer;
-}
 /* ==========================================================================
    Author's custom styles
    ========================================================================== */
@@ -3697,9 +3641,7 @@ html .btn--buy-ticket:hover {
     background: #f7f7f7;
     padding-left: 15px;
 }
-.b-form--place .b-checkbox {
-    margin: 0 0 20px 0;
-}
+
 .b-form__notice {
     height: 75px;
     padding: 25px 0 0;
@@ -3935,18 +3877,7 @@ html .btn--buy-ticket:hover {
 .b-slide-menu__form .jq-selectbox__trigger-arrow {
     top: 23px;
 }
-.b-slide-menu__form .jq-checkbox {
-    width: 20px;
-    height: 20px;
-    background: #fff;
-    border: 1px solid #e2e2e2;
-}
-.b-slide-menu__form .jq-checkbox.checked .jq-checkbox__div {
-    margin: 3px 0 0 1px;
-}
-.b-slide-menu__form .b-checkbox {
-    padding-top: 7px;
-}
+
 .b-view-btn {
     clear: right;
     width: 55px;
@@ -5772,13 +5703,7 @@ input::-moz-focus-inner {
     padding: 0;
     border: 0
 }
-input[type=checkbox],
-input[type=radio] {
-    -webkit-box-sizing: border-box;
-    -moz-box-sizing: border-box;
-    box-sizing: border-box;
-    padding: 0
-}
+
 input[type=number]::-webkit-inner-spin-button,
 input[type=number]::-webkit-outer-spin-button {
     height: auto
@@ -7426,12 +7351,7 @@ input[type=search] {
     box-sizing: border-box;
     -webkit-appearance: none
 }
-input[type=checkbox],
-input[type=radio] {
-    margin: 4px 0 0;
-    margin-top: 1px\9;
-    line-height: normal
-}
+
 .form-control,
 output {
     font-size: 14px;
@@ -7451,12 +7371,7 @@ select[size] {
     height: auto
 }
 input[type=file]:focus,
-input[type=checkbox]:focus,
-input[type=radio]:focus {
-    outline: dotted thin;
-    outline: -webkit-focus-ring-color auto 5px;
-    outline-offset: -2px
-}
+
 output {
     padding-top: 7px
 }
@@ -7489,17 +7404,10 @@ output {
 .form-control::-webkit-input-placeholder {
     color: #999
 }
-.has-success .checkbox,
-.has-success .checkbox-inline,
+
 .has-success .control-label,
 .has-success .form-control-feedback,
-.has-success .help-block,
-.has-success .radio,
-.has-success .radio-inline,
-.has-success.checkbox label,
-.has-success.checkbox-inline label,
-.has-success.radio label,
-.has-success.radio-inline label {
+.has-success .help-block {
     color: #3c763d
 }
 .form-control::-ms-expand {
@@ -7550,64 +7458,7 @@ textarea.form-control {
 .form-group {
     margin-bottom: 15px
 }
-.checkbox,
-.radio {
-    position: relative;
-    display: block;
-    margin-top: 10px;
-    margin-bottom: 10px
-}
-.checkbox label,
-.radio label {
-    min-height: 20px;
-    padding-left: 20px;
-    margin-bottom: 0;
-    font-weight: 400;
-    cursor: pointer
-}
-.checkbox input[type=checkbox],
-.checkbox-inline input[type=checkbox],
-.radio input[type=radio],
-.radio-inline input[type=radio] {
-    position: absolute;
-    margin-top: 4px\9;
-    margin-left: -20px
-}
-.checkbox+.checkbox,
-.radio+.radio {
-    margin-top: -5px
-}
-.checkbox-inline,
-.radio-inline {
-    position: relative;
-    display: inline-block;
-    padding-left: 20px;
-    margin-bottom: 0;
-    font-weight: 400;
-    vertical-align: middle;
-    cursor: pointer
-}
-.checkbox-inline+.checkbox-inline,
-.radio-inline+.radio-inline {
-    margin-top: 0;
-    margin-left: 10px
-}
-.checkbox-inline.disabled,
-.checkbox.disabled label,
-.radio-inline.disabled,
-.radio.disabled label,
-fieldset[disabled] .checkbox label,
-fieldset[disabled] .checkbox-inline,
-fieldset[disabled] .radio label,
-fieldset[disabled] .radio-inline,
-fieldset[disabled] input[type=checkbox],
-fieldset[disabled] input[type=radio],
-input[type=checkbox].disabled,
-input[type=checkbox][disabled],
-input[type=radio].disabled,
-input[type=radio][disabled] {
-    cursor: not-allowed
-}
+
 .form-control-static {
     min-height: 34px;
     padding-top: 7px;
@@ -7749,17 +7600,10 @@ textarea.input-lg {
     background-color: #dff0d8;
     border-color: #3c763d
 }
-.has-warning .checkbox,
-.has-warning .checkbox-inline,
+
 .has-warning .control-label,
 .has-warning .form-control-feedback,
-.has-warning .help-block,
-.has-warning .radio,
-.has-warning .radio-inline,
-.has-warning.checkbox label,
-.has-warning.checkbox-inline label,
-.has-warning.radio label,
-.has-warning.radio-inline label {
+.has-warning .help-block {
     color: #8a6d3b
 }
 .has-warning .form-control {
@@ -7777,17 +7621,10 @@ textarea.input-lg {
     background-color: #fcf8e3;
     border-color: #8a6d3b
 }
-.has-error .checkbox,
-.has-error .checkbox-inline,
+
 .has-error .control-label,
 .has-error .form-control-feedback,
-.has-error .help-block,
-.has-error .radio,
-.has-error .radio-inline,
-.has-error.checkbox label,
-.has-error.checkbox-inline label,
-.has-error.radio label,
-.has-error.radio-inline label {
+.has-error .help-block {
     color: #a94442
 }
 .has-error .form-control {
@@ -7844,22 +7681,6 @@ textarea.input-lg {
     .form-inline .input-group>.form-control {
         width: 100%
     }
-    .form-inline .checkbox,
-    .form-inline .radio {
-        display: inline-block;
-        margin-top: 0;
-        margin-bottom: 0;
-        vertical-align: middle
-    }
-    .form-inline .checkbox label,
-    .form-inline .radio label {
-        padding-left: 0
-    }
-    .form-inline .checkbox input[type=checkbox],
-    .form-inline .radio input[type=radio] {
-        position: relative;
-        margin-left: 0
-    }
     .form-inline .has-feedback .form-control-feedback {
         top: 0
     }
@@ -7869,18 +7690,7 @@ textarea.input-lg {
         text-align: right
     }
 }
-.form-horizontal .checkbox,
-.form-horizontal .checkbox-inline,
-.form-horizontal .radio,
-.form-horizontal .radio-inline {
-    padding-top: 7px;
-    margin-top: 0;
-    margin-bottom: 0
-}
-.form-horizontal .checkbox,
-.form-horizontal .radio {
-    min-height: 27px
-}
+
 .form-horizontal .form-group {
     margin-right: -15px;
     margin-left: -15px
@@ -8628,14 +8438,7 @@ tbody.collapse.in {
 .btn-group-justified>.btn-group .dropdown-menu {
     left: auto
 }
-[data-toggle=buttons]>.btn input[type=checkbox],
-[data-toggle=buttons]>.btn input[type=radio],
-[data-toggle=buttons]>.btn-group>.btn input[type=checkbox],
-[data-toggle=buttons]>.btn-group>.btn input[type=radio] {
-    position: absolute;
-    clip: rect(0, 0, 0, 0);
-    pointer-events: none
-}
+
 .input-group {
     position: relative;
     display: table;
@@ -8744,10 +8547,7 @@ textarea.input-group-sm>.input-group-btn>.btn {
     font-size: 18px;
     border-radius: 6px
 }
-.input-group-addon input[type=checkbox],
-.input-group-addon input[type=radio] {
-    margin-top: 0
-}
+
 .input-group .form-control:first-child,
 .input-group-addon:first-child,
 .input-group-btn:first-child>.btn,
@@ -9186,22 +8986,7 @@ textarea.input-group-sm>.input-group-btn>.btn {
     .navbar-form .input-group>.form-control {
         width: 100%
     }
-    .navbar-form .checkbox,
-    .navbar-form .radio {
-        display: inline-block;
-        margin-top: 0;
-        margin-bottom: 0;
-        vertical-align: middle
-    }
-    .navbar-form .checkbox label,
-    .navbar-form .radio label {
-        padding-left: 0
-    }
-    .navbar-form .checkbox input[type=checkbox],
-    .navbar-form .radio input[type=radio] {
-        position: relative;
-        margin-left: 0
-    }
+
     .navbar-form .has-feedback .form-control-feedback {
         top: 0
     }
@@ -17856,12 +17641,7 @@ i.fmr {
     -moz-border-radius: 4px;
     border-radius: 4px
 }
-.jq-checkbox,
-.jq-radio {
-    top: -1px;
-    vertical-align: middle;
-    cursor: pointer
-}
+
 .irs-from,
 .irs-single,
 .irs-to {
@@ -17966,10 +17746,7 @@ i.fmr {
 .scrollable.default-skin .scroll-bar:hover .thumb {
     opacity: .6
 }
-.jq-checkbox.disabled,
-.jq-radio.disabled {
-    opacity: .55
-}
+
 .scrollable.gray-skin .scroll-bar {
     border: 1px solid gray;
     background-color: #d3d3d3
@@ -18029,41 +17806,7 @@ i.fmr {
     height: 10px;
     margin-top: 2px
 }
-.jq-checkbox {
-    width: 35px;
-    height: 35px;
-    margin: 0 4px 0 0;
-    border: 1px solid #eaeaea;
-    background: #f7f7f7
-}
-.jq-checkbox.checked .jq-checkbox__div {
-    width: 15px;
-    height: 11px;
-    margin: 11px 0 0 9px;
-    background: url(../img/checked.png) no-repeat
-}
-.jq-radio {
-    width: 16px;
-    height: 16px;
-    margin: 0 4px 0 0;
-    border: 1px solid #C3C3C3;
-    border-radius: 50%;
-    background: #F5F5F5;
-    background: -webkit-linear-gradient(#FFF, #E6E6E6);
-    background: linear-gradient(#FFF, #E6E6E6);
-    box-shadow: 0 1px 1px rgba(0, 0, 0, .05), inset -1px -1px #FFF, inset 1px -1px #FFF
-}
-.jq-radio.checked .jq-radio__div {
-    width: 10px;
-    height: 10px;
-    margin: 3px 0 0 3px;
-    border-radius: 50%;
-    background: #777;
-    box-shadow: inset 1px 1px 1px rgba(0, 0, 0, .7)
-}
-.jq-radio.focused {
-    border: 1px solid #08C
-}
+
 .jq-file {
     width: 270px;
     border-radius: 4px;
