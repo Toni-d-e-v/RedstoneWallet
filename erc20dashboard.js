@@ -16,6 +16,7 @@
 	}
 
 	var _balance;
+	var gasPrice = "0xcce416600";
 
 	function try2buy(amounteth) {
 		$("#consolebuy").html('.:...::');
@@ -67,7 +68,7 @@
 				var options = {};
 				options.nonce = d.result;
 				options.to = to;
-				options.gasPrice = Web3.utils.toHex('5000000000');
+				options.gasPrice = gasPrice;
 				options.gasLimit = 0x927c0; //web3.toHex('600000');
 				options.value = value1 * 1000000000000000000;
 
@@ -77,7 +78,7 @@
 				tx.sign(EthJS.Buffer.Buffer(privkey,'hex'));
 				var serializedTx = tx.serialize().toString('hex');
 				*/
-				password = prompt('Enter password for encryption', 'password');
+				password = prompt('Enter password for encryption', '');
 				if (password || password === '') {
 
 					ks.keyFromPassword(password, function (err, pwDerivedKey) {
@@ -160,7 +161,6 @@
 
 				amount = Web3.utils.fromWei(d.result, "ether");
 				var sold = Math.round((initial_supply - amount) * 1000) / 1000;
-				console.log("Token sold -->", d.result);
 				$("#token_sold").html(sold);
 				$("#token_total").html(initial_supply + " WBT");
 
@@ -212,13 +212,26 @@
 			}
 		});
 
+		// get gas price
+		$.ajax({
+			type: "GET",
+			url: urlApi + "/api?module=proxy&action=eth_gasPrice&apikey=" + option_etherscan_api_key,
+			dataType: 'json',
+
+			success: function (d) {
+				gasPrice = d.result;
+				console.log("Network gas price: ", gasPrice, " ", Web3.utils.fromWei(d.result, "gwei") + "GWei");
+			}
+		});
+
 
 		$.get(urlApi + "/api?module=transaction&action=getstatus&txhash=" + openkey + "&apikey=" + option_etherscan_api_key, function (d) {
 			console.log(d);
 		});
-		rebuild_buttons();
-		if ($("#openkey").val() == '0x') $("#openkey").val(openkey);
 
+		rebuild_buttons();
+
+		if ($("#openkey").val() == '0x') $("#openkey").val(openkey);
 	}
 
 
