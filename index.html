@@ -70,7 +70,7 @@
 					</h2>
 					<div class="b-form b-form--place container-fluid">
 						<div class="b-form__row">
-							<div id="progress_funding" class="ui green big progress">
+							<div id="progress_funding" class="ui green progress">
 								<div class="bar">
 								</div>
 							</div>
@@ -185,12 +185,11 @@
 				<div class="b-form-cont">
 					<h2 class="b-form-cont__title">Your ETH wallet address</h2>
 					<div class="b-form b-form--place container-fluid">
-						<div class='b-form__row'>
+						<div class='b-form__row' style="padding: 0 3px;">
 							<div id='console'></div>
-							<input type='text' style='margin-bottom:20px' id='openkey' value=''>
+							<input type='text' style='margin-bottom:20px; font-size: 13.5px;' id='openkey' value=''>
 							<img id='ethqr' src='' style='padding-right:10px;float:left'>
-							<span style='margin-top:10px'>Minimum payment 0.5 ETH</span>
-
+							<span style='margin-top:10px'>0.5 ETH minimum is <b>only</b> for using ShapeShift to convert tokens to ETH. You may send any amount of ETH to this wallet address to purchase any amount WBT!</span>
 
 							<script>
 								function shapeshift_click(a, e) {

@@ -164,7 +164,7 @@
 				$("#token_sold").html(sold);
 				$("#token_total").html(initial_supply + " WBT");
 
-				var percent = sold * 3000000 / initial_supply;
+				var percent = sold * 100 / initial_supply;
 
 				$("#progress_funding").progress({
 					percent: percent
