@@ -273,9 +273,10 @@
 	$(function () {
 		$("#slider-range-max").slider({
 			range: "max",
-			min: 1,
+			min: 100,
 			max: 250000,
-			value: 1000,
+			value: 5000,
+			step: 100,
 			slide: function (event, ui) {
 				$("#amount").val(ui.value);
 				recalc();
