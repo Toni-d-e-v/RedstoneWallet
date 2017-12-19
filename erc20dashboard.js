@@ -487,19 +487,87 @@
 		window.location.reload();
 	}
 
-	function importkey() {
-		if (serializedKeystore = prompt("Keystore String here")) {
-			ks = lightwallet.keystore.deserialize(serializedKeystore);
-			var addr = ks.getAddresses()[0];
+	async function importkey() {
 
-			var keystorage = ks.serialize();
-			localStorage.setItem("keystore", keystorage);
-			localStorage.setItem("isreg", 1);
-			localStorage.setItem("openkey", "0x" + addr);
+		const { value: secretSeed } = await swal({
+			input: 'textarea',
+			title: 'Import Wallet',
+			inputPlaceholder: 'Mnemonic Phrase here',
+			showCancelButton: true,
+			inputValidator: (value) => {
+				return new Promise((resolve) => {
+					if (lightwallet.keystore.isSeedValid(value)) {
+						resolve();
+					} else {
+						resolve('Mnemonic Phrase is invalid');
+					}
+				});
+			}
+		});
 
-			s("registered", 1);
-			s("saved", 1);
-			window.location.reload();
+		var password = '';
+		if (secretSeed) {
+			await swal({
+				title: 'Enter New Password',
+				input: 'password',
+				inputPlaceholder: 'Enter new password',
+				inputAttributes: {
+					'maxlength': 20,
+					'autocapitalize': 'off',
+					'autocorrect': 'off'
+				}
+			}).then((result) => {
+				password = result.value;
+			});
+		}
+		if (secretSeed && password) {
+			swal({
+				title: 'Please wait...',
+				text: 'Importing wallet...',
+				timer: 20000,
+				type: 'info',
+				allowOutsideClick: false,
+				allowEscapeKey: false,
+				onOpen: () => {
+					swal.showLoading()
+				}
+			}).then((result) => {
+				if (result.dismiss === 'timer') {
+					console.log('closed by the timer')
+				}
+			});
+
+			lightwallet.keystore.createVault({
+				password: password,
+				seedPhrase: secretSeed, // Optionally provide a 12-word seed phrase
+			}, function (err, ks) {
+				ks.keyFromPassword(password, function (err, pwDerivedKey) {
+
+					if (err) throw err;
+
+					// generate a new address/private key pair
+					// the corresponding private keys are also encrypted
+					ks.generateNewAddress(pwDerivedKey, 1);
+					var addr = ks.getAddresses()[0];
+
+					var prv_key = ks.exportPrivateKey(addr, pwDerivedKey);
+					var keystorage = ks.serialize();
+					localStorage.setItem("keystore", keystorage);
+					localStorage.setItem("isreg", 1);
+					localStorage.setItem("openkey", "0x" + addr);
+					localStorage.setItem("d12keys", secretSeed);
+
+					openkey = localStorage.getItem("openkey");
+
+					console.log(password, pwDerivedKey);
+
+					swal.close();
+
+					s("registered", 1);
+					s("saved", 1);
+					window.location.reload();
+				});
+			});
 		}
 	}
 
