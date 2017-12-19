@@ -12,7 +12,7 @@
 	<meta name="description" content="WorldBit Token Wallet">
 	<link rel="shortcut icon" href="favicon.png">
 	<link rel="apple-touch-icon" href="apple-touch-icon.png">
-	<link rel="stylesheet" href="css/dashboardred.css">
+	<link rel="stylesheet" href="css/dashboardred.css?v=1">
 	<link rel="stylesheet" href="css/progress.min.css">
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/7.0.6/sweetalert2.min.css">
 	<link rel="stylesheet" href="css/jquery-u.css">
@@ -66,25 +66,6 @@
 
 				<div class="b-form-cont">
 					<h2 class="b-form-cont__title" style="display: flex;">
-						Crowdsale Fund Raising
-					</h2>
-					<div class="b-form b-form--place container-fluid">
-						<div class="b-form__row">
-							<div id="progress_funding" class="ui green progress">
-								<div class="bar">
-								</div>
-							</div>
-						</div>
-						<div class="b-form__row">
-							<span id="token_sold">...</span>
-							<span>&nbsp;Of&nbsp;</span>
-							<span id="token_total">...</span>
-						</div>
-					</div>
-				</div>
-
-				<div class="b-form-cont">
-					<h2 class="b-form-cont__title" style="display: flex;">
 						<span id="btn_create_account" style="float: left;">Create account (below)</span>
 						<span style="margin-left: auto; margin-right: auto;">or</span>
 						<span style='float:right; cursor: pointer;' onclick='importkey();'>Import wallet string</span>
@@ -101,6 +82,35 @@
 						</div>
 						<div class="b-form__row pass" style='display:none'>
 							<input type="password" id='pass' placeholder="Confirm password (and press Enter)">
+						</div>
+					</div>
+				</div>
+
+				<div class="b-form-cont">
+					<h2 class="b-form-cont__title" style="display: flex;">
+						Crowdsale Fund Raising
+					</h2>
+					<div class="b-form b-form--place container-fluid">
+						<div class="b-form__row">
+							<div id="progress_funding" class="ui green progress">
+								<div class="bar">
+								</div>
+							</div>
+						</div>
+						<div class="b-form__row">
+							<span id="token_sold">...</span>
+							<span>&nbsp;Of&nbsp;</span>
+							<span id="token_total">...</span>
+						</div>
+						<div class="b-form__row">
+							<p>18th Dec 24th Dec Tranche 0% - 9.99% Price USD $ 0.86 - <i>Open</i></p>
+							<p>25th Dec 31st Dec Tranche 10% - 19.99% Price USD $ 0.88 - <i>Upcoming</i></p>
+							<p>1st Jan 7th Jan Tranche 20% - 29.99% Price USD $ 0.91 - <i>Upcoming</i></p>
+							<p>8th Jan 14th Jan Tranche 30% - 39.99% Price USD $ 0.94 - <i>Upcoming</i></p>
+							<p>15th Jan 21st Jan Tranche 40% - 49.99% Price USD $ 0.97 - <i>Upcoming</i></p>
+							<p>22nd Jan 1st Feb Tranche 50% - 59.99% Price USD $ 1.94 - <i>Upcoming</i></p>
+							<p>2nd Feb 14th Feb Tranche 60% - 69.99% Price USD $ 1.03 - <i>Upcoming</i></p>
+							<p>15th Feb Tranche 70% - 79.99% Price USD $ 1.07 - <i>Upcoming</i></p>
 						</div>
 					</div>
 				</div>
@@ -362,7 +372,7 @@
 	<script src="js/progress.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/7.0.6/sweetalert2.min.js"></script>
-	<script src="erc20dashboard.js?v=5"></script>
+	<script src="erc20dashboard.js?v=6"></script>
 	<script src="js/masonry.pkgd.min.js"></script>
 	<script>
 		var buyPrice = parseInt(Web3.utils.toWei('0.0028', 'ether'));

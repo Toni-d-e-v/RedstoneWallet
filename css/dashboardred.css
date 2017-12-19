@@ -11132,8 +11132,8 @@ button.close {
     float: left
 }
 p {
-    margin: 0 0 15px;
-    line-height: 150%
+    margin: 0 0 8px;
+    line-height: 120%
 }
 .container,
 .container-fluid {
