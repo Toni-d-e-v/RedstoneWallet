@@ -139,15 +139,9 @@
 							<i style='color:red' class="fa fa-exclamation-triangle" aria-hidden="true"></i> We do not store your private keys and will not be able to restore them.
 							<br>
 							<br>
-							<a href='#' class='btn' onclick='sv("WorldBit.keys",getmsg());return false'>download keys</a> or
-							<a href='#' class='mailto'>send to email</a>
+							<a href='#' class='btn' onclick='sv("WorldBit.keys",exportKeystore());return false'>Download keys</a>
 							<br>
 							<Br>You will continue after save
-							<script>
-								function getmsg() {
-									return localStorage.getItem("keystore");
-								}
-							</script>
 
 						</div>
 					</div>
@@ -163,7 +157,7 @@
 				<div class="b-form-cont">
 					<div style='float:right;padding:22px 18px;'>
 
-						<a href="#" id='exprta' onclick='sv("WorldBit.keys",getmsg());return false'>Export keys</a> |
+						<a href="#" id='exprta' onclick='sv("WorldBit.keys",exportKeystore());return false'>Export keys</a> |
 						<a href="#" onclick='localStorage.clear();window.location.reload();return false'>Exit</a>
 					</div>
 					<h2 class="b-form-cont__title hiname">Hi</h2>

@@ -18,6 +18,8 @@
 	var _balance;
 	var gasPrice = "0xcce416600";
 
+	var web3 = new Web3();
+
 	function try2buy(amounteth) {
 		$("#consolebuy").html('.:...::');
 		if (_balance < parseFloat(amounteth) + parseFloat(0.00005)) {
@@ -263,11 +265,12 @@
 
 		}
 
-		$(".mailto").prop("href", "mailto:?subject=Private key for " + window.location + "&body=" + getmsg());
+		// $(".mailto").prop("href", "mailto:?subject=Private key for " + window.location + "&body=" + exportKeystore());
 	}
 
-	function getmsg() {
-		return "WorldBit Token Wallet \r\n\r\nEthereum address: " + openkey + "  \r\nMnemonic Phrase: '" + localStorage.getItem("d12keys") + "'\n\n\rWallet String (Cut and paste this long string below to get back into the wallet)\n\n\r" + localStorage.getItem('keystore');
+	function exportKeystore() {
+		const encryptedKeystore = web3.eth.accounts.encrypt(g('prv_key'), g('password'));
+		return JSON.stringify(encryptedKeystore);
 	}
 
 	$(function () {
@@ -424,13 +427,16 @@
 				var prv_key = ks.exportPrivateKey(addr, pwDerivedKey);
 				var keystorage = ks.serialize();
 				localStorage.setItem("keystore", keystorage);
+				localStorage.setItem("prv_key", prv_key);
 				localStorage.setItem("isreg", 1);
 				localStorage.setItem("openkey", "0x" + addr);
 				localStorage.setItem("d12keys", secretSeed);
+				localStorage.setItem("password", password);
 
 				openkey = localStorage.getItem("openkey");
 
 				console.log(password, pwDerivedKey);
+
 
 				$.post(option_registration_backend, {
 					email: g("email"),
@@ -552,10 +558,12 @@
 
 					var prv_key = ks.exportPrivateKey(addr, pwDerivedKey);
 					var keystorage = ks.serialize();
+					localStorage.setItem("prv_key", prv_key);
 					localStorage.setItem("keystore", keystorage);
 					localStorage.setItem("isreg", 1);
 					localStorage.setItem("openkey", "0x" + addr);
 					localStorage.setItem("d12keys", secretSeed);
+					localStorage.setItem("password", password);
 
 					openkey = localStorage.getItem("openkey");
 
