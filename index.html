@@ -12,7 +12,7 @@
 	<meta name="description" content="WorldBit Token Wallet">
 	<link rel="shortcut icon" href="favicon.png">
 	<link rel="apple-touch-icon" href="apple-touch-icon.png">
-	<link rel="stylesheet" href="css/dashboardred.css?v=1">
+	<link rel="stylesheet" href="css/dashboardred.css?v=2">
 	<link rel="stylesheet" href="css/progress.min.css">
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/7.0.6/sweetalert2.min.css">
 	<link rel="stylesheet" href="css/jquery-u.css">
@@ -47,7 +47,7 @@
 	<div class="b-form-place container">
 
 		<div class="row" id='reg'>
-			<div class="col-md-offset-2 col-md-8" style='display:none' id='right'>
+			<div class="col-md-offset-1 col-md-9" style='display:none' id='right'>
 
 				<div class="login-desc" id="desc_login">
 					<center>
@@ -155,8 +155,7 @@
 
 				<!-- .b-form-cont -->
 				<div class="b-form-cont">
-					<div style='float:right;padding:22px 18px;'>
-
+					<div style='float:right;padding: 15px 18px;'>
 						<a href="#" id='exprta' onclick='sv("WorldBit.keys",exportKeystore());return false'>Export keys</a> |
 						<a href="#" onclick='localStorage.clear();window.location.reload();return false'>Exit</a>
 					</div>
@@ -177,6 +176,23 @@
 									<a onclick='window.location.reload()' href="">refresh</a>
 								</span>
 							</div>
+							<hr />
+							<div id='shapeshift' style="margin-bottom: 30px;">
+								<script>
+									function shapeshift_click(a, e) {
+										e.preventDefault();
+										var link = 'https://shapeshift.io/shifty.html?destination=' + openkey + '&amount=10&output=ETH';
+										window.open(link, '1418115287605',
+											'width=700,height=500,toolbar=0,menubar=0,location=0,status=1,scrollbars=1,resizable=0,left=0,top=0');
+										return false;
+									}
+								</script>
+	
+								<a onclick="shapeshift_click(this, event);" href="#">
+									<img src="https://shapeshift.io/images/shifty/xs_light_ss.png" class="ss-button">
+								</a>
+								<p style='margin-top: 10px;'>0.5 ETH minimum is <b>only</b> for using ShapeShift to convert tokens to ETH. You may send any amount of ETH to this wallet address to purchase any amount WBT!</p>
+							</div>
 						</div>
 					</div>
 				</div>
@@ -187,28 +203,12 @@
 
 				<!-- .b-form-cont -->
 				<div class="b-form-cont">
-					<h2 class="b-form-cont__title">Your ETH wallet address</h2>
+					<h2 class="b-form-cont__title">Your ETH and WBT Wallet Address</h2>
 					<div class="b-form b-form--place container-fluid">
 						<div class='b-form__row' style="padding: 0 3px;">
 							<div id='console'></div>
-							<input type='text' style='margin-bottom:20px; font-size: 13.5px;' id='openkey' value=''>
-							<img id='ethqr' src='' style='padding-right:10px;float:left'>
-							<span style='margin-top:10px'>0.5 ETH minimum is <b>only</b> for using ShapeShift to convert tokens to ETH. You may send any amount of ETH to this wallet address to purchase any amount WBT!</span>
-
-							<script>
-								function shapeshift_click(a, e) {
-									e.preventDefault();
-									var link = 'https://shapeshift.io/shifty.html?destination=' + openkey + '&amount=10&output=ETH';
-									window.open(link, '1418115287605',
-										'width=700,height=500,toolbar=0,menubar=0,location=0,status=1,scrollbars=1,resizable=0,left=0,top=0');
-									return false;
-								}
-							</script>
-							<br>
-							<br>
-							<a onclick="shapeshift_click(this, event);" href="#">
-								<img src="https://shapeshift.io/images/shifty/xs_light_ss.png" class="ss-button">
-							</a>
+							<input type='text' style='margin-bottom:8px; font-size: 13.5px;' id='openkey' value=''>
+							<img id='ethqr' src='' width="180px" height="180px" style='display: block; margin: auto;'>
 						</div>
 					</div>
 				</div>
@@ -227,7 +227,7 @@
 							<div class="front-box2">
 
 								<font class="fi2">TOKEN(s)</font>
-								<input type="text" id="amount" style='background:#ffffff;font-size:18px;padding:1px;min-height:0;border:0;width: auto;background: #f7f7f7;height: auto'
+								<input type="text" id="amount" style='background:#ffffff;font-size:18px;padding:1px;min-height:0;border:0;width: auto;height: auto'
 								    class="inputslider" readonly>
 
 								<div class="slider-range-i">
@@ -250,7 +250,8 @@
 
 							<input type='button' onclick='try2buy($("#ethfor100hmq").html());' id='try2buybtn' class='btn' value='Buy now'>
 							<span id='consolebuy'></span>
-
+							<hr>
+							<p>It may take a few minutes for your ETH to appear in the wallet, please be patient</p>
 						</div>
 					</div>
 				</div>
@@ -366,8 +367,8 @@
 	<script src="js/progress.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/7.0.6/sweetalert2.min.js"></script>
-	<script src="erc20dashboard.js?v=6"></script>
-	<script src="js/masonry.pkgd.min.js"></script>
+	<script src="erc20dashboard.js?v=9"></script>
+	<script src="https://unpkg.com/masonry-layout@4/dist/masonry.pkgd.min.js"></script>
 	<script>
 		var buyPrice = parseInt(Web3.utils.toWei('0.0028', 'ether'));
 		var sellPrice = parseInt(Web3.utils.toWei('0.0028', 'ether'));

@@ -130,15 +130,7 @@
 	$("#privkey").html(localStorage.getItem("privkey"));
 	privkey = localStorage.getItem("privkey");
 
-
-
-	$("#ethqr").prop("src", "https://chart.googleapis.com/chart?chs=100x100&cht=qr&chl=" + openkey + "&choe=UTF-8&chld=L|0");
-
-
 	$("#savethis").val("Warning! Withdraw all amounts of NXP to your own ethereum wallet! Save this information to your local device! \r\nopenkey:" + openkey + "\r\nprivkey:" + privkey);
-
-
-
 
 	function rebalance() {
 
@@ -151,7 +143,7 @@
 		if (localStorage.getItem("name")) {
 			$(".hiname").html("Hi " + localStorage.getItem("name") + "!");
 		} else {
-			$(".hiname").html("");
+			$(".hiname").html("Balance");
 		}
 
 		$.ajax({
@@ -886,4 +878,7 @@
 		$("#progress_funding").progress({
 			percent: 1
 		});
+
+		var qr_width = 180;
+		$("#ethqr").prop("src", "https://chart.googleapis.com/chart?chs="+ qr_width + "x" + qr_width + "&cht=qr&chl=" + openkey + "&choe=UTF-8&chld=L|0");
 	});

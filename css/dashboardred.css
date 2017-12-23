@@ -3618,9 +3618,9 @@ html .btn--buy-ticket:hover {
     margin-bottom: 40px;
 }
 .b-form-cont__title {
-    padding: 20px 40px;
+    padding: 15px 40px;
     border-bottom: 1px solid #ececec;
-    margin: 0 0 40px;
+    margin: 0 0 15px;
     font: 300 18px Roboto-Light;
 }
 .b-form--place .b-form__row {
@@ -6658,8 +6658,8 @@ a {
     border-radius: 50%
 }
 hr {
-    margin-top: 20px;
-    margin-bottom: 20px;
+    margin-top: 10px;
+    margin-bottom: 10px;
     border-top: 1px solid #eee
 }
 .sr-only {
