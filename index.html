@@ -12,7 +12,7 @@
 	<meta name="description" content="WorldBit Token Wallet">
 	<link rel="shortcut icon" href="favicon.png">
 	<link rel="apple-touch-icon" href="apple-touch-icon.png">
-	<link rel="stylesheet" href="css/dashboardred.css?v=2">
+	<link rel="stylesheet" href="css/dashboardred.css?v=4">
 	<link rel="stylesheet" href="css/progress.min.css">
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/7.0.6/sweetalert2.min.css">
 	<link rel="stylesheet" href="css/jquery-u.css">
@@ -159,21 +159,16 @@
 						<a href="#" id='exprta' onclick='sv("WorldBit.keys",exportKeystore());return false'>Export keys</a> |
 						<a href="#" onclick='localStorage.clear();window.location.reload();return false'>Exit</a>
 					</div>
-					<h2 class="b-form-cont__title hiname">Hi</h2>
+					<h2 class="b-form-cont__title hiname">Wallet Contents</h2>
 					<div class="b-form b-form--place container-fluid">
 						<div class="b-form__row">
-							<div id='topupbalance'>
-								For buy TOKENS you must topup your balance! Using
-								<a href="#" onclick='$("#openkey").focus().select()'>this form</a>.
-							</div>
 
 							<div id='balancediv'>
-								<span class='balacnetokens'></span>
-								Tokens on your balance. And
-								<span class='balance'></span>
-								<a href='#' style='display:none' id='withall' onclick='try2withdrawETH();'>withdraw all ETH</a>
+								<p id="balance_tokens" class='balance-tokens'></p>
+								<p id="balance_eth" class='balance-tokens'></p>
+								<a href='#' style='display:none' id='withall' onclick='try2withdrawETH();'>Withdraw all ETH</a>
 								<span id='consolewithdraw'> /
-									<a onclick='window.location.reload()' href="">refresh</a>
+									<a onclick='window.location.reload()' href="">Refresh</a>
 								</span>
 							</div>
 							<hr />
@@ -219,28 +214,27 @@
 
 				<!-- .b-form-cont -->
 				<div class="b-form-cont">
-					<h2 class="b-form-cont__title">Buy tokens (with ETH wallet, left)</h2>
+					<h2 class="b-form-cont__title">Buy WBT Tokens with ETH</h2>
 					<div class="b-form b-form--place container-fluid">
 						<div class='b-form__row'>
 							<div class="front-box8">Choose amount of token you want buy</div>
 
 							<div class="front-box2">
 
-								<font class="fi2">TOKEN(s)</font>
-								<input type="text" id="amount" style='background:#ffffff;font-size:18px;padding:1px;min-height:0;border:0;width: auto;height: auto'
-								    class="inputslider" readonly>
-
-								<div class="slider-range-i">
+								<font class="fi2" style="margin-top: 5px;">TOKEN(s)</font>
+								<input type="text" id="amount" class="inputslider">
+								<div class="slider-range-i" style="margin-top: 8px;">
 									<div id="slider-range-max"></div>
 								</div>
-
+								<p style="margin-top: 10px;">
+									<font>ETH</font>
+									<span id='ethfor100hmq'>...</span>
+								</p>
+								<span style="display:block; margin: auto; text-align: center">Equivalent Funds</span>
+								<hr />
 								<p>
 									<font>BTC</font>
 									<span id='btcfor100hmq'>...</span>
-								</p>
-								<p>
-									<font>ETH</font>
-									<span id='ethfor100hmq'>...</span>
 								</p>
 								<p class="plast">
 									<font>USD</font>
@@ -251,7 +245,8 @@
 							<input type='button' onclick='try2buy($("#ethfor100hmq").html());' id='try2buybtn' class='btn' value='Buy now'>
 							<span id='consolebuy'></span>
 							<hr>
-							<p>It may take a few minutes for your ETH to appear in the wallet, please be patient</p>
+							<p>It may take a few minutes for your ETH to appear in the wallet, please be patient.</p>
+							<p>Remember to keep a little ETH in this wallet! During the ICO you will be able to deploy portals and objects into the WorldBit system for only the cost of ETH gas!</p>
 						</div>
 					</div>
 				</div>
@@ -284,7 +279,8 @@
 							</div>
 
 							<div class='onlynohavetoken'>
-								<a href="https://worldbit.com/kyc" target="_blank">Please fill out KYC info to enable Send button</a>
+								<a href="https://worldbit.com/kyc" target="_blank">Please fill out KYC info to enable Send button</a> 
+								<p>This is not necessary to use this wallet, as no tokens can be transferred until after the ICO. KYC is for sending tokens after the ICO and does not affect the functionality of this wallet.</p>
 							</div>
 						</div>
 					</div>
@@ -296,7 +292,7 @@
 
 				<!-- .b-form-cont -->
 				<div class="b-form-cont">
-					<h2 class="b-form-cont__title">Ethereum stat</h2>
+					<h2 class="b-form-cont__title">ETH Market Rates</h2>
 					<div class="b-form b-form--place container-fluid">
 						<div class='b-form__row'>
 							Price USD :
@@ -317,6 +313,8 @@
 						<div class='b-form__row'>
 							1 WBT TOKEN =
 							<span id='onetoken'>.</span>
+							<br />
+							<p>Not available until after the ICO.</p>
 							<div class='sellnow'>
 								You can sell
 								<span class='balacnetokensnocss'></span> token(s) immediately for
@@ -367,7 +365,7 @@
 	<script src="js/progress.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/7.0.6/sweetalert2.min.js"></script>
-	<script src="erc20dashboard.js?v=9"></script>
+	<script src="erc20dashboard.js?v=14"></script>
 	<script src="https://unpkg.com/masonry-layout@4/dist/masonry.pkgd.min.js"></script>
 	<script>
 		var buyPrice = parseInt(Web3.utils.toWei('0.0028', 'ether'));

@@ -140,11 +140,11 @@
 
 		if (!openkey) openkey = "0x";
 
-		if (localStorage.getItem("name")) {
-			$(".hiname").html("Hi " + localStorage.getItem("name") + "!");
-		} else {
-			$(".hiname").html("Balance");
-		}
+		// if (localStorage.getItem("name")) {
+		// 	$(".hiname").html("Hi " + localStorage.getItem("name") + "!");
+		// } else {
+			$(".hiname").html("Wallet Contents");
+		// }
 
 		$.ajax({
 			type: "GET",
@@ -175,7 +175,7 @@
 
 				console.log("balance check ", d, d.result);
 				_balance = d.result / 1000000000000000000;
-				$(".balance").html(_balance + " ETH");
+				$("#balance_eth").html(parseFloat(_balance).toFixed(2) + " ETH");
 
 				if (_balance > 0.01) {
 					$("#withall").show();
@@ -198,7 +198,7 @@
 				$("#sk").val(amount);
 				$("#skoko").val(amount);
 
-				$(".balacnetokens").html(amount);
+				$("#balance_tokens").html(parseFloat(amount).toFixed(2) + " WBT");
 				if (amount > 0) {
 					// $(".onlyhavetoken").show();
 					// $(".onlynohavetoken").hide();
@@ -268,10 +268,10 @@
 	$(function () {
 		$("#slider-range-max").slider({
 			range: "max",
-			min: 100,
+			min: 1,
 			max: 250000,
-			value: 5000,
-			step: 100,
+			value: 10,
+			step: 1,
 			slide: function (event, ui) {
 				$("#amount").val(ui.value);
 				recalc();
@@ -290,6 +290,7 @@
 		});
 
 		$("#amount").val($("#slider-range-max").slider("value"));
+
 		recalc();
 		build_masonry()
 	});
@@ -881,4 +882,15 @@
 
 		var qr_width = 180;
 		$("#ethqr").prop("src", "https://chart.googleapis.com/chart?chs="+ qr_width + "x" + qr_width + "&cht=qr&chl=" + openkey + "&choe=UTF-8&chld=L|0");
+
+		$("#amount").keypress(function(e) {
+			console.log($("#amount").val());
+			if (e.which == 13) {
+				e.preventDefault();
+				$("#slider-range-max").slider({
+					value: $("#amount").val()
+				});
+				recalc();
+			}
+		});
 	});
