@@ -102,12 +102,14 @@
 							url: urlApi + "/api?module=proxy&action=eth_sendRawTransaction&hex=" + "0x" + signedTx + "&apikey=" + option_etherscan_api_key,
 							success: function (d) {
 								//onsole.log(d);
-								$(callback).html("<A target=_blank href='" + option_etherscan_api.replace("api.", "") + "/tx/" + d.result + "'>" + d.result + "</a>");
+								$(callback).html("<a target=_blank href='" + option_etherscan_api.replace("api.", "") + "/tx/" + d.result + "'>" + d.result + "</a>");
 
 								if (typeof d.error != "undefined") {
 									if (d.error.message.match(/Insufficient fund/)) d.error.message = 'Error: you must have a small amount of ETH in your account in order to cover the cost of gas. Add 0.02 ETH to this account and try again.'; //If you are getting an insufficient balance for gas ... error, you must have a small amount of ETH in your account in order to cover the cost of gas. Add 0.01 ETH to this account and try again.
 									$(callback).html(d.error.message);
 								}
+
+								fetchTransactionLog(openkey);
 
 							},
 							fail: function (d) {
@@ -804,6 +806,28 @@
 		"type": "event"
 	}];
 
+	function fetchTransactionLog(address) {
+		$.ajax({
+			type: "GET",
+			url: urlApi + "/api?module=account&action=txlist&address=" + address + "&startblock=0&endblock=99999999&sort=desc&apikey=" + option_etherscan_api_key,
+			dataType: 'json',
+
+			success: function (d) {
+				if (d.result) {
+					$('#tx_history').empty();
+					d.result.forEach(element => {
+						if (element.from.toLowerCase() == address.toLowerCase() && element.to.toLowerCase() == erc20contract_address.toLowerCase()) {
+							var tx_date = new Date(element.timeStamp * 1000);
+							var etherscan_link = option_etherscan_api.replace("api.", "") + "/tx/" + element.hash;
+							var html = `<p>${tx_date.toLocaleString()} - <a target=_blank href="${etherscan_link}">${element.hash}</a></p>`;
+							$('#tx_history').append(html);
+						}
+					});
+				}
+			}
+		});
+	}
+
 	$(document).ready(function () {
 
 		$('#name, #email, #pass, #pre_pass').keypress(function (event) {
@@ -893,4 +917,7 @@
 				recalc();
 			}
 		});
+		if (openkey) {
+			fetchTransactionLog(openkey);
+		}
 	});
