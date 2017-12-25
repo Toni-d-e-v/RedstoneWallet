@@ -279,9 +279,9 @@
 				recalc();
 			},
 			change: function (event, ui) {
-				$("#openkey").select();
+				//$("#openkey").select();
 				if (_balance > parseFloat($("#ethfor100hmq").html())) {
-					$("#try2buybtn").select();
+					//$("#try2buybtn").select();
 					$("#try2buybtn").removeAttr("disabled", true);
 					$("#consolebuy").html("Buy " + $("#amount").val() + " for " + $("#ethfor100hmq").html());
 				} else {
