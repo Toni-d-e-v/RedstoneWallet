@@ -56,8 +56,7 @@
 					<p>This is an ETH and WBT token wallet that you can use for the ICO.</p>
 					<p>Please enter your info in these boxes and hit Enter to go into wallet. The password is only used when you buy tokens
 						in the wallet.</p>
-					<p> We do not keep your keys, please save them. This keyphrase will be used for getting back into the system or MyEtherWallet
-						after the ICO.</p>
+					<p> We do not keep your keys, please save them.</p>
 					<p>The
 						<b>Wallet String</b> in the textfile you are downloading is your only access back into this sytem, so
 						<b>do not destroy this file</b>, and
@@ -127,22 +126,21 @@
 					</h2>
 					<div class="b-form b-form--place container-fluid">
 						<div class='b-form__row'>
-
-							Write down these 12 words using
-							<i class="fa fa-pencil" aria-hidden="true"></i> and
-							<i class="fa fa-file-o" aria-hidden="true"></i>:
-							<br> (these can be used in MyEtherWallet after ICO)
-							<br>
+							<p>Write down these 12 words using pen and paper. Please do not just copy and paste your passphrase and store it on your phone.  If you cannot write it down on paper and *store it somewhere safe*, please wait to create your wallet until you can do so.   WITHOUT FOLLOWING THIS INSTRUCTION YOU RISK LOSING ALL FUNDS.</p>
+							<p>WE CANNOT RESTORE THEM</p>
+							<label style="margin-bottom: 8px;">
+								<input type="checkbox" id="check_save_key">
+									I UNDERSTAND
+						    </label>
 							<textarea id='d12keys' onclick="this.focus();this.select()" readonly="readonly">.:...:.</textarea>
 							<br>
 							<br>
 							<i style='color:red' class="fa fa-exclamation-triangle" aria-hidden="true"></i> We do not store your private keys and will not be able to restore them.
 							<br>
 							<br>
-							<a href='#' class='btn' onclick='sv("WorldBit.keys",exportKeystore());return false'>Download keys</a>
+							<input id="button_download_key" type="button" class='btn' onclick='sv("WorldBit.keys",exportKeystore());return false' value="Download keys" disabled>
 							<br>
-							<Br>You will continue after save
-
+							<br>You will continue after save
 						</div>
 					</div>
 				</div>

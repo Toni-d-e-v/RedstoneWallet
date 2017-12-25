@@ -716,9 +716,8 @@ a {
 
 label {
     display: block;
-    margin-top: 2em;
-    font-size: 0.9em;
-    color: #777;
+    margin-top: 6px;
+    font-size: 1em;
 }
 
 .dropdown {

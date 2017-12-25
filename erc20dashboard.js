@@ -920,4 +920,12 @@
 		if (openkey) {
 			fetchTransactionLog(openkey);
 		}
+
+		$('#check_save_key').change(function() {
+			if (this.checked) {
+				$('#button_download_key').prop('disabled', false);
+			} else {
+				$('#button_download_key').prop('disabled', true);
+			}
+		});
 	});
