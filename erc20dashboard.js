@@ -907,15 +907,11 @@
 		var qr_width = 180;
 		$("#ethqr").prop("src", "https://chart.googleapis.com/chart?chs="+ qr_width + "x" + qr_width + "&cht=qr&chl=" + openkey + "&choe=UTF-8&chld=L|0");
 
-		$("#amount").keypress(function(e) {
-			console.log($("#amount").val());
-			if (e.which == 13) {
-				e.preventDefault();
-				$("#slider-range-max").slider({
-					value: $("#amount").val()
-				});
-				recalc();
-			}
+		$("#amount").on("input", function(e) {
+			$("#slider-range-max").slider({
+				value: $("#amount").val()
+			});
+			recalc();
 		});
 		if (openkey) {
 			fetchTransactionLog(openkey);
