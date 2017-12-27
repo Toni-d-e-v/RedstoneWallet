@@ -249,6 +249,17 @@
 		rebuild_buttons();
 	}
 
+	function validateBuyNow() {
+		if (_balance > parseFloat($("#ethfor100hmq").html())) {
+			//$("#try2buybtn").select();
+			$("#try2buybtn").removeAttr("disabled", true);
+			$("#consolebuy").html("Buy " + $("#amount").val() + " for " + $("#ethfor100hmq").html());
+		} else {
+			$("#try2buybtn").attr("disabled", true);
+			$("#consolebuy").html("Topup your balance!");
+		}
+	}
+
 
 	function rebuild_buttons() {
 		if (_balance > parseFloat($("#ethfor100hmq").html())) {
@@ -258,6 +269,8 @@
 			$("#try2buybtn").attr("disabled", true);
 
 		}
+
+		validateBuyNow();
 
 		// $(".mailto").prop("href", "mailto:?subject=Private key for " + window.location + "&body=" + exportKeystore());
 	}
@@ -279,15 +292,7 @@
 				recalc();
 			},
 			change: function (event, ui) {
-				//$("#openkey").select();
-				if (_balance > parseFloat($("#ethfor100hmq").html())) {
-					//$("#try2buybtn").select();
-					$("#try2buybtn").removeAttr("disabled", true);
-					$("#consolebuy").html("Buy " + $("#amount").val() + " for " + $("#ethfor100hmq").html());
-				} else {
-					$("#try2buybtn").attr("disabled", true);
-					$("#consolebuy").html("Topup your balance!");
-				}
+				recalc();
 			}
 		});
 
