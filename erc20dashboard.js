@@ -186,27 +186,28 @@
 			}
 		});
 
-		// url: urlApi+"/api?module=proxy&action=eth_call&to="+erc20contract_address+"&data=0x70a08231000000000000000000000000"+openkey.replace('0x','')+"&tag=latest&apikey="+option_etherscan_api_key, 
-		$.ajax({
-			type: "GET",
-			url: urlApi + "/api?module=account&action=tokenbalance&contractaddress=" + erc20contract_function_address + "&address=" + openkey + "&tag=latest&apikey=" + option_etherscan_api_key,
-			dataType: 'json',
+		if (openkey != "0x") {
+			// url: urlApi+"/api?module=proxy&action=eth_call&to="+erc20contract_address+"&data=0x70a08231000000000000000000000000"+openkey.replace('0x','')+"&tag=latest&apikey="+option_etherscan_api_key, 
+			$.ajax({
+				type: "GET",
+				url: urlApi + "/api?module=account&action=tokenbalance&contractaddress=" + erc20contract_function_address + "&address=" + openkey + "&tag=latest&apikey=" + option_etherscan_api_key,
+				dataType: 'json',
 
-			success: function (d) {
+				success: function (d) {
+					console.log("-->", d);
+					amount = Web3.utils.fromWei(d.result, "ether");
+					$(".balacnetokensnocss").html(amount);
+					$("#sk").val(amount);
+					$("#skoko").val(amount);
 
-				amount = Web3.utils.fromWei(d.result, "ether");
-				console.log("-->", d.result);
-				$(".balacnetokensnocss").html(amount);
-				$("#sk").val(amount);
-				$("#skoko").val(amount);
-
-				$("#balance_tokens").html(parseFloat(amount).toFixed(2) + " WBT");
-				if (amount > 0) {
-					// $(".onlyhavetoken").show();
-					// $(".onlynohavetoken").hide();
+					$("#balance_tokens").html(parseFloat(amount).toFixed(2) + " WBT");
+					if (amount > 0) {
+						// $(".onlyhavetoken").show();
+						// $(".onlynohavetoken").hide();
+					}
 				}
-			}
-		});
+			});
+		}
 
 		// get gas price
 		$.ajax({
