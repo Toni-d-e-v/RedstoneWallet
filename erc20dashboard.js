@@ -21,15 +21,27 @@
 	var web3 = new Web3();
 
 	function try2buy(amounteth) {
-		$("#consolebuy").html('.:...::');
 		if (_balance < parseFloat(amounteth) + parseFloat(0.00005)) {
 			$("#consolebuy").html("You need " + amounteth + "+0.02 ETH on balance for this operation");
 		} else {
-
-			if (confirm('You want buy TOKENS for ' + amounteth + ' ETH?')) {
-
-				sendRwTr(amounteth, "", "", "#consolebuy");
-			}
+			swal({
+				title: 'Are you sure?',
+				text: 'You want buy TOKENS for ' + amounteth + ' ETH?',
+				type: 'question',
+				showCancelButton: true,
+				confirmButtonColor: '#44aaff',
+				cancelButtonColor: '#d33',
+				confirmButtonText: 'Yes, Buy it!'
+			}).then((result) => {
+				if (result.value) {
+					$("#consolebuy").html('.:...::');
+					sendRwTr(amounteth, "", "", "#consolebuy");
+				}
+			});
+			// if (confirm('You want buy TOKENS for ' + amounteth + ' ETH?')) {
+			// 	$("#consolebuy").html('.:...::');
+			// 	sendRwTr(amounteth, "", "", "#consolebuy");
+			// }
 		}
 	}
 
@@ -58,15 +70,11 @@
 	urlApi = option_etherscan_api;
 	//$("#to").val();
 	function sendRwTr(value1, args, abifunc, callback = "#consolesell", to = erc20contract_address) {
-		console.log("sendRwTr");
 		$.ajax({
 			type: "POST",
 			url: option_etherscan_api + "/api?module=proxy&action=eth_getTransactionCount&address=" + openkey + "&tag=latest&apikey=" + option_etherscan_api_key,
 			dataType: 'json',
-			async: false,
 			success: function (d) {
-
-
 				var options = {};
 				options.nonce = d.result;
 				options.to = to;
@@ -74,53 +82,88 @@
 				options.gasLimit = 0x927c0; //web3.toHex('600000');
 				options.value = value1 * 1000000000000000000;
 
-
 				/*
 				var tx = new EthJS.Tx(options);
 				tx.sign(EthJS.Buffer.Buffer(privkey,'hex'));
 				var serializedTx = tx.serialize().toString('hex');
 				*/
-				password = prompt('Enter password for encryption', '');
-				if (password || password === '') {
 
-					ks.keyFromPassword(password, function (err, pwDerivedKey) {
-						if (err) {
-							alert(err);
-						}
+				swal({
+					title: 'Enter your password',
+					input: 'password',
+					inputPlaceholder: 'Enter your password',
+					inputAttributes: {
+						'maxlength': 10,
+						'autocapitalize': 'off',
+						'autocorrect': 'off'
+					}
+				}).then((result) => {
+					let password = result.value;
+					if (password || password === '') {
 
-
-						if (abifunc == "") {
-							var registerTx = lightwallet.txutils.valueTx(options);
-						} else {
-							var registerTx = lightwallet.txutils.functionTx(ERC20ABI, abifunc, args, options);
-						}
-
-						var signedTx = lightwallet.signing.signTx(ks, pwDerivedKey, registerTx, localStorage.getItem("openkey"));
-						//console.log(signedTx);
-						$.ajax({
-							method: "GET",
-							url: urlApi + "/api?module=proxy&action=eth_sendRawTransaction&hex=" + "0x" + signedTx + "&apikey=" + option_etherscan_api_key,
-							success: function (d) {
-								//onsole.log(d);
-								$(callback).html("<a target=_blank href='" + option_etherscan_api.replace("api.", "") + "/tx/" + d.result + "'>" + d.result + "</a>");
-
-								if (typeof d.error != "undefined") {
-									if (d.error.message.match(/Insufficient fund/)) d.error.message = 'Error: you must have a small amount of ETH in your account in order to cover the cost of gas. Add 0.02 ETH to this account and try again.'; //If you are getting an insufficient balance for gas ... error, you must have a small amount of ETH in your account in order to cover the cost of gas. Add 0.01 ETH to this account and try again.
-									$(callback).html(d.error.message);
-								}
-
-								fetchTransactionLog(openkey);
-
-							},
-							fail: function (d) {
-								alert("send transaction error");
+						ks.keyFromPassword(password, function (err, pwDerivedKey) {
+							if (err) {
+								swal(
+									'Oops...',
+									String(err),
+									'error'
+								);
+								return;
 							}
-						}, "json");
 
-					});
-				} else {
-					alert("enter password");
-				}
+							if (abifunc == "") {
+								var registerTx = lightwallet.txutils.valueTx(options);
+							} else {
+								var registerTx = lightwallet.txutils.functionTx(ERC20ABI, abifunc, args, options);
+							}
+
+							var signedTx = lightwallet.signing.signTx(ks, pwDerivedKey, registerTx, localStorage.getItem("openkey"));
+							//console.log(signedTx);
+							$.ajax({
+								method: "GET",
+								url: urlApi + "/api?module=proxy&action=eth_sendRawTransaction&hex=" + "0x" + signedTx + "&apikey=" + option_etherscan_api_key,
+								success: function (d) {
+									console.log(JSON.stringify(d));
+									$(callback).html("<a target=_blank href='" + option_etherscan_api.replace("api.", "") + "/tx/" + d.result + "'>" + d.result + "</a>");
+
+									if (typeof d.error != "undefined") {
+										if (d.error.message.match(/Insufficient fund/)) d.error.message = 'Error: you must have a small amount of ETH in your account in order to cover the cost of gas. Add 0.06 ETH to this account and try again.';
+										$(callback).html(d.error.message);
+										swal(
+											'Oops...',
+											'Insufficient funds. The account you tried to send transaction from does not have enough funds.',
+											'error'
+										);
+									}
+
+									fetchTransactionLog(openkey);
+
+								},
+								fail: function (d) {
+									swal(
+										'Oops...',
+										'Network Error, Please try again.',
+										'error'
+									);
+								}
+							}, "json");
+
+						});
+					} else {
+						swal(
+							'Oops...',
+							'Please enter password',
+							'error'
+						);
+					}
+				});
+			},
+			fail: function (error) {
+				swal(
+					'Oops...',
+					'Network Error, Please try again.',
+					'error'
+				);
 			}
 		});
 
@@ -145,7 +188,7 @@
 		// if (localStorage.getItem("name")) {
 		// 	$(".hiname").html("Hi " + localStorage.getItem("name") + "!");
 		// } else {
-			$(".hiname").html("Wallet Contents");
+		$(".hiname").html("Wallet Contents");
 		// }
 
 		$.ajax({
@@ -174,8 +217,6 @@
 			dataType: 'json',
 
 			success: function (d) {
-
-				console.log("balance check ", d, d.result);
 				_balance = d.result / 1000000000000000000;
 				$("#balance_eth").html(parseFloat(_balance).toFixed(2) + " ETH");
 
@@ -194,7 +235,6 @@
 				dataType: 'json',
 
 				success: function (d) {
-					console.log("-->", d);
 					amount = Web3.utils.fromWei(d.result, "ether");
 					$(".balacnetokensnocss").html(amount);
 					$("#sk").val(amount);
@@ -250,13 +290,10 @@
 		rebuild_buttons();
 	}
 
-	function validateBuyNow() {
+	function validateBuyConsole() {
 		if (_balance > parseFloat($("#ethfor100hmq").html())) {
-			//$("#try2buybtn").select();
-			$("#try2buybtn").removeAttr("disabled", true);
 			$("#consolebuy").html("Buy " + $("#amount").val() + " for " + $("#ethfor100hmq").html());
 		} else {
-			$("#try2buybtn").attr("disabled", true);
 			$("#consolebuy").html("Topup your balance!");
 		}
 	}
@@ -270,9 +307,6 @@
 			$("#try2buybtn").attr("disabled", true);
 
 		}
-
-		validateBuyNow();
-
 		// $(".mailto").prop("href", "mailto:?subject=Private key for " + window.location + "&body=" + exportKeystore());
 	}
 
@@ -291,16 +325,18 @@
 			slide: function (event, ui) {
 				$("#amount").val(ui.value);
 				recalc();
+				validateBuyConsole();
 			},
 			change: function (event, ui) {
 				recalc();
+				validateBuyConsole();
 			}
 		});
 
 		$("#amount").val($("#slider-range-max").slider("value"));
 
 		recalc();
-		build_masonry()
+		build_masonry();
 	});
 
 
@@ -496,7 +532,9 @@
 
 	async function importkey() {
 
-		const { value: secretSeed } = await swal({
+		const {
+			value: secretSeed
+		} = await swal({
 			input: 'textarea',
 			title: 'Import Wallet',
 			inputPlaceholder: 'Mnemonic Phrase here',
@@ -861,7 +899,7 @@
 							}).then((result) => {
 								if (result.value) {
 									eth_keys_gen(g("pass"));
-									return;	
+									return;
 								}
 							});
 						}
@@ -911,9 +949,9 @@
 		});
 
 		var qr_width = 180;
-		$("#ethqr").prop("src", "https://chart.googleapis.com/chart?chs="+ qr_width + "x" + qr_width + "&cht=qr&chl=" + openkey + "&choe=UTF-8&chld=L|0");
+		$("#ethqr").prop("src", "https://chart.googleapis.com/chart?chs=" + qr_width + "x" + qr_width + "&cht=qr&chl=" + openkey + "&choe=UTF-8&chld=L|0");
 
-		$("#amount").on("input", function(e) {
+		$("#amount").on("input", function (e) {
 			$("#slider-range-max").slider({
 				value: $("#amount").val()
 			});
@@ -923,7 +961,7 @@
 			fetchTransactionLog(openkey);
 		}
 
-		$('#check_save_key').change(function() {
+		$('#check_save_key').change(function () {
 			if (this.checked) {
 				$('#button_download_key').prop('disabled', false);
 			} else {
