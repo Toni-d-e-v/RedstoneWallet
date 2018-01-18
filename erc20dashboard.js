@@ -79,7 +79,7 @@
 				options.nonce = d.result;
 				options.to = to;
 				options.gasPrice = gasPrice;
-				options.gasLimit = 0x927c0; //web3.toHex('600000');
+				options.gasLimit = 0x33450; //web3.toHex('210000');
 				options.value = value1 * 1000000000000000000;
 
 				/*
