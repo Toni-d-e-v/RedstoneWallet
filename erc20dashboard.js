@@ -134,6 +134,8 @@
 											'Insufficient funds. The account you tried to send transaction from does not have enough funds.',
 											'error'
 										);
+									} else {
+										reportAffiliate($("#amount").val(), value1);
 									}
 
 									fetchTransactionLog(openkey);
@@ -377,6 +379,32 @@
 			build_masonry();
 		} else {
 			$("#right").show();
+
+			// if (!g('intro_showed')) {
+			// 	swal({
+			// 		title: 'WorldBit ICO Wallet',
+			// 		html:
+			// 		`<br><p class="alert-danger--outline">
+			// 			<span>Please take some time to understand this for your own safety. 🙏</span>
+			// 			<span>Your funds will be stolen if you do not heed these warnings.</span>
+			// 		</p>
+			// 		<p class="alert-danger--outline">We cannot recover your funds or freeze your account if you visit a phishing site or lose your private key.</p>
+			// 		<br>
+			// 		<h3>What is MEW?</h3>
+			// 		<ul>
+			// 			<li>MyEtherWallet is a free, open-source, client-side interface.</li>
+			// 			<li>We allow you to interact directly with the blockchain while remaining in full control of your keys &amp; your funds.</li>
+			// 			<li><strong>You</strong> and <strong>only you</strong> are responsible for your security.</li>
+			// 		</ul>`,
+			// 		showCloseButton: true,
+			// 		focusConfirm: false,
+			// 		confirmButtonText:
+			// 		'<i class="fa fa-thumbs-up"></i> Got It!',
+			// 		confirmButtonAriaLabel: 'Thumbs up, Got It!'
+			// 	});
+			// 	s('intro_showed', true);
+			// }
+
 			recalc();
 		}
 
@@ -868,6 +896,23 @@
 						}
 					});
 				}
+			}
+		});
+	}
+
+	function reportAffiliate(token_amount, eth_amount) {
+		$.ajax({
+			type: "GET",
+			url: "https://affiliate.worldbit.com/information/add_commision",
+			data: {
+				ref: 1,
+				qty: token_amount,
+				price: eth_amount * parseInt($("#price_usd").html())
+			},
+			dataType: 'json',
+
+			success: function (d) {
+				console.log("report Affiliate" , d);
 			}
 		});
 	}
