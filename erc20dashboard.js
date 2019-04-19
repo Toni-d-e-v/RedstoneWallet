@@ -1,4 +1,9 @@
 	if (typeof urlApi == "undefined") {
+		var erc20contract_address = "0x030D1a87a36C9442E25416c3D36611Af5c29Eba9";
+		var erc20contract_function_address = "0xe2eB8871aeCaB528E3A36BF8a9b2D9A044b39626";
+		var token_owner_address = "0x030D1a87a36C9442E25416c3D36611Af5c29Eba9"
+		var option_etherscan_api = 'https://api.etherscan.io'; //change to https://api.etherscan.io for mainnet
+		var option_etherscan_api_key = 'QSUZ77YJZ2H68K6SJKRZSAP7ERYJS51893';
 		var option_registration_enabled = true;
 		var option_registration_backend = 'https://intel.worldbit.com/kyc_interface.php'; ///'subscribe.php'; //you can use remote address like https://yoursite.com/subscribe.php
 		var option_recive_btc = ''; //reserved for future
@@ -382,7 +387,7 @@
 
 	function build_state() {
 
-		$("#mysmart").prop('href', option_etherscan_api.replace("api.", "") + "/address/" + erc20contract_address);
+
 		if (g("registered") == 1) {
 			$("#name").hide();
 			$("#email").hide();
@@ -662,28 +667,6 @@
 		}
 	}
 
-	function fetchTransactionLog(address) {
-		$.ajax({
-			type: "GET",
-			url: urlApi + "/api?module=account&action=txlist&address=" + address + "&startblock=0&endblock=99999999&sort=desc&apikey=" + option_etherscan_api_key,
-			dataType: 'json',
-
-			success: function (d) {
-				if (d.result) {
-					$('#tx_history').empty();
-					d.result.forEach(element => {
-						if (element.from.toLowerCase() == address.toLowerCase() && element.to.toLowerCase() == erc20contract_address.toLowerCase()) {
-							var tx_date = new Date(element.timeStamp * 1000);
-							var etherscan_link = option_etherscan_api.replace("api.", "") + "/tx/" + element.hash;
-							var html = `<p>${tx_date.toLocaleString()} - <a target=_blank href="${etherscan_link}">${element.hash}</a></p>`;
-							$('#tx_history').append(html);
-						}
-					});
-				}
-			}
-		});
-	}
-
 	function reportAffiliate(token_amount, eth_amount) {
 		$.ajax({
 			type: "GET",
@@ -787,7 +770,7 @@
 			recalc();
 		});
 		if (openkey) {
-			fetchTransactionLog(openkey);
+			// fetchTransactionLog(openkey);
 		}
 
 		$('#check_save_key').change(function () {
