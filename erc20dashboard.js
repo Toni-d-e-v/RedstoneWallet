@@ -257,35 +257,37 @@
 		$(".hiname").html("Wallet Contents");
 		// }
 
-		$.ajax({
-			type: "GET",
-			url: urlApi + "/account/balance/" + openkey,
-			dataType: 'json',
-
-			success: function (d) {
-				console.log(d);
-				_balance = d.web;
-				$("#balance_eth").html(parseFloat(_balance).toFixed(2) + " WEB");
-
-				if (_balance > 0.01) {
-					$("#withall").show();
+		if (openkey != "0x") {
+			$.ajax({
+				type: "GET",
+				url: urlApi + "/account/balance/" + openkey,
+				dataType: 'json',
+	
+				success: function (d) {
+					console.log(d);
+					_balance = d.web;
+					$("#balance_eth").html(parseFloat(_balance).toFixed(2) + " WEB");
+	
+					if (_balance > 0.01) {
+						$("#withall").show();
+					}
+	
+					$(".balacnetokensnocss").html(d.token);
+						$("#sk").val(d.token);
+						if (!$("#skoko").val()) {
+							$("#skoko").val(d.token);
+						}
+	
+						$("#balance_tokens").html(parseFloat(d.token).toFixed(2) + " WBT");
+	
+						if (parseFloat(d.token) > 0.0) {
+							$(".onlyhavetoken").show();
+							$(".onlynohavetoken").hide();
+						}
+	
 				}
-
-				$(".balacnetokensnocss").html(d.token);
-					$("#sk").val(d.token);
-					if (!$("#skoko").val()) {
-						$("#skoko").val(d.token);
-					}
-
-					$("#balance_tokens").html(parseFloat(d.token).toFixed(2) + " WBT");
-
-					if (parseFloat(d.token) > 0.0) {
-						$(".onlyhavetoken").show();
-						$(".onlynohavetoken").hide();
-					}
-
-			}
-		});
+			});
+		}
 
 		rebuild_buttons();
 
