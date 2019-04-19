@@ -1,4 +1,4 @@
-	if (typeof erc20contract_address == "undefined") {
+	if (typeof urlApi == "undefined") {
 		var erc20contract_address = "0xe895ca33788C5812119AE5F5c98A78924931F2D5";
 		var erc20contract_function_address = "0xe2eB8871aeCaB528E3A36BF8a9b2D9A044b39626";
 		var token_owner_address = "0xe895ca33788c5812119ae5f5c98a78924931f2d5"
@@ -8,6 +8,8 @@
 		var option_registration_backend = 'https://intel.worldbit.com/kyc_interface.php'; ///'subscribe.php'; //you can use remote address like https://yoursite.com/subscribe.php
 		var option_recive_btc = ''; //reserved for future
 		var initial_supply = 52500000;
+
+		var urlApi = 'http://localhost:3000/api/v1';
 	}
 
 	var ks = localStorage.getItem('keystore');
@@ -57,118 +59,180 @@
 		}
 	}
 
-	function try2withdrawETH() {
-		$("#consolewithdraw").html('.:...::');
-
-		var toamount = _balance - 0.019;
-		if (tosell = prompt('Enter ETH address (0x...)', erc20contract_address)) {
-			sendRwTr(toamount, "", "", "#consolewithdraw", tosell);
+	function try2send() {
+		$("#consolesend").html('.:...::');
+		toAddress = $("#kuda").val();
+		tokenAmount = $("#skoko").val();
+		if (isNaN(tokenAmount)) {
+			swal({
+				title: 'Error!',
+				text: 'Token Amount must be number.',
+				type: 'error',
+				confirmButtonText: 'OK'
+			  });
+			return;
 		}
-
+		if (!Web3.utils.isAddress(toAddress)) {
+			swal({
+				title: 'Error!',
+				text: 'Invalid Address. Please check address to send Tokens.',
+				type: 'error',
+				confirmButtonText: 'OK'
+			  });
+			return;
+		}
+		sendToken(toAddress, tokenAmount, "#consolesend");
 	}
 
-	urlApi = option_etherscan_api;
-	//$("#to").val();
-	function sendRwTr(value1, args, abifunc, callback = "#consolesell", to = erc20contract_address) {
-		$.ajax({
-			type: "POST",
-			url: option_etherscan_api + "/api?module=proxy&action=eth_getTransactionCount&address=" + openkey + "&tag=latest&apikey=" + option_etherscan_api_key,
-			dataType: 'json',
-			success: function (d) {
-				var options = {};
-				options.nonce = d.result;
-				options.to = to;
-				options.gasPrice = gasPrice;
-				options.gasLimit = 0x33450; //web3.toHex('210000');
-				options.value = value1 * 1000000000000000000;
+	function try2withdrawETH() {
+		var toamount = _balance - 0.019;
+		if (toAddress = prompt('Enter ETH address (0x...)')) {
+			$("#consolewithdraw").html('.:...::');
+			send(toAddress, toamount, "#consolewithdraw");
+		}
+	}
 
-				/*
-				var tx = new EthJS.Tx(options);
-				tx.sign(EthJS.Buffer.Buffer(privkey,'hex'));
-				var serializedTx = tx.serialize().toString('hex');
-				*/
+	function sendToken(toAddress, value, consoleLabel) {
+		swal({
+			title: 'Enter your password',
+			input: 'password',
+			inputPlaceholder: 'Enter your password',
+			inputAttributes: {
+				'maxlength': 10,
+				'autocapitalize': 'off',
+				'autocorrect': 'off'
+			}
+		}).then((result) => {
+			let password = result.value;
+			if (password || password === '') {
 
-				swal({
-					title: 'Enter your password',
-					input: 'password',
-					inputPlaceholder: 'Enter your password',
-					inputAttributes: {
-						'maxlength': 10,
-						'autocapitalize': 'off',
-						'autocorrect': 'off'
-					}
-				}).then((result) => {
-					let password = result.value;
-					if (password || password === '') {
-
-						ks.keyFromPassword(password, function (err, pwDerivedKey) {
-							if (err) {
-								swal(
-									'Oops...',
-									String(err),
-									'error'
-								);
-								return;
-							}
-
-							if (abifunc == "") {
-								var registerTx = lightwallet.txutils.valueTx(options);
-							} else {
-								var registerTx = lightwallet.txutils.functionTx(ERC20ABI, abifunc, args, options);
-							}
-
-							var signedTx = lightwallet.signing.signTx(ks, pwDerivedKey, registerTx, localStorage.getItem("openkey"));
-							//console.log(signedTx);
-							$.ajax({
-								method: "GET",
-								url: urlApi + "/api?module=proxy&action=eth_sendRawTransaction&hex=" + "0x" + signedTx + "&apikey=" + option_etherscan_api_key,
-								success: function (d) {
-									console.log(JSON.stringify(d));
-									$(callback).html("<a target=_blank href='" + option_etherscan_api.replace("api.", "") + "/tx/" + d.result + "'>" + d.result + "</a>");
-
-									if (typeof d.error != "undefined") {
-										if (d.error.message.match(/Insufficient fund/)) d.error.message = 'Error: you must have a small amount of ETH in your account in order to cover the cost of gas. Add 0.06 ETH to this account and try again.';
-										$(callback).html(d.error.message);
-										swal(
-											'Oops...',
-											'Insufficient funds. The account you tried to send transaction from does not have enough funds.',
-											'error'
-										);
-									} else {
-										reportAffiliate($("#amount").val(), value1);
-									}
-
-									fetchTransactionLog(openkey);
-
-								},
-								fail: function (d) {
-									swal(
-										'Oops...',
-										'Network Error, Please try again.',
-										'error'
-									);
-								}
-							}, "json");
-
-						});
-					} else {
+				ks.keyFromPassword(password, function (err, pwDerivedKey) {
+					if (err) {
 						swal(
 							'Oops...',
-							'Please enter password',
+							String(err),
 							'error'
 						);
+						return;
 					}
+					var params = {
+						"fromAddress": openkey,
+						"privateKey": g("prv_key"),
+						"toAddress" : toAddress,
+						"value" : value
+					};
+
+					$.ajax({
+						method: "POST",
+						url: urlApi + "/transaction/transferToken",
+						dataType: 'json',
+						data: params,
+						success: function (d) {
+							console.log(JSON.stringify(d));
+							$(consoleLabel).html("<a target=_blank href='https://explorer.webchain.network/tx/" + d.transactionHash + "'>" + d.transactionHash + "</a>");
+
+							if (typeof d.transactionHash != "undefined") {
+								if (d.message.match(/Insufficient fund/)) d.error.message = 'Error: you must have a small amount of ETH in your account in order to cover the cost of gas. Add 0.06 ETH to this account and try again.';
+								$(consoleLabel).html(d.message);
+								swal(
+									'Oops...',
+									'Insufficient funds. The account you tried to send transaction from does not have enough funds.',
+									'error'
+								);
+							} else {
+								// reportAffiliate($("#amount").val(), value);
+							}
+						},
+						fail: function (d) {
+							swal(
+								'Oops...',
+								'Network Error, Please try again.',
+								'error'
+							);
+						}
+					}, "json");
+
 				});
-			},
-			fail: function (error) {
+			} else {
 				swal(
 					'Oops...',
-					'Network Error, Please try again.',
+					'Please enter password',
 					'error'
 				);
 			}
 		});
+	}
 
+
+	function send(toAddress, value, consoleLabel) {
+		swal({
+			title: 'Enter your password',
+			input: 'password',
+			inputPlaceholder: 'Enter your password',
+			inputAttributes: {
+				'maxlength': 10,
+				'autocapitalize': 'off',
+				'autocorrect': 'off'
+			}
+		}).then((result) => {
+			let password = result.value;
+			if (password || password === '') {
+
+				ks.keyFromPassword(password, function (err, pwDerivedKey) {
+					if (err) {
+						swal(
+							'Oops...',
+							String(err),
+							'error'
+						);
+						return;
+					}
+					var params = {
+						"fromAddress": openkey,
+						"privateKey": g("prv_key"),
+						"toAddress" : toAddress,
+						"value" : value
+					};
+
+					$.ajax({
+						method: "POST",
+						url: urlApi + "/transaction/transfer",
+						dataType: 'json',
+						data: params,
+						success: function (d) {
+							console.log(JSON.stringify(d));
+							$(consoleLabel).html("<a target=_blank href='https://explorer.webchain.network/tx/" + d.transactionHash + "'>" + d.transactionHash + "</a>");
+
+							if (typeof d.transactionHash != "undefined") {
+								if (d.message.match(/Insufficient fund/)) d.error.message = 'Error: you must have a small amount of ETH in your account in order to cover the cost of gas. Add 0.06 ETH to this account and try again.';
+								$(consoleLabel).html(d.message);
+								swal(
+									'Oops...',
+									'Insufficient funds. The account you tried to send transaction from does not have enough funds.',
+									'error'
+								);
+							} else {
+								// reportAffiliate($("#amount").val(), value);
+							}
+						},
+						fail: function (d) {
+							swal(
+								'Oops...',
+								'Network Error, Please try again.',
+								'error'
+							);
+						}
+					}, "json");
+
+				});
+			} else {
+				swal(
+					'Oops...',
+					'Please enter password',
+					'error'
+				);
+			}
+		});
 	}
 
 	openkey = localStorage.getItem("openkey");
@@ -195,77 +259,32 @@
 
 		$.ajax({
 			type: "GET",
-			url: urlApi + "/api?module=account&action=tokenbalance&contractaddress=" + erc20contract_function_address + "&address=" + token_owner_address + "&tag=latest&apikey=" + option_etherscan_api_key,
+			url: urlApi + "/account/balance/" + openkey,
 			dataType: 'json',
 
 			success: function (d) {
-
-				amount = Web3.utils.fromWei(d.result, "ether");
-				var sold = Math.round((initial_supply - amount) * 1000) / 1000;
-				$("#token_sold").html(sold);
-				$("#token_total").html(initial_supply + " WBT");
-
-				var percent = sold * 100 / initial_supply;
-
-				$("#progress_funding").progress({
-					percent: percent
-				});
-			}
-		});
-
-		$.ajax({
-			type: "GET",
-			url: urlApi + "/api?module=account&action=balance&address=" + openkey + "&tag=latest&apikey=" + option_etherscan_api_key,
-			dataType: 'json',
-
-			success: function (d) {
-				_balance = d.result / 1000000000000000000;
-				$("#balance_eth").html(parseFloat(_balance).toFixed(2) + " ETH");
+				console.log(d);
+				_balance = d.web;
+				$("#balance_eth").html(parseFloat(_balance).toFixed(2) + " WEB");
 
 				if (_balance > 0.01) {
 					$("#withall").show();
 				}
 
-			}
-		});
-
-		if (openkey != "0x") {
-			// url: urlApi+"/api?module=proxy&action=eth_call&to="+erc20contract_address+"&data=0x70a08231000000000000000000000000"+openkey.replace('0x','')+"&tag=latest&apikey="+option_etherscan_api_key, 
-			$.ajax({
-				type: "GET",
-				url: urlApi + "/api?module=account&action=tokenbalance&contractaddress=" + erc20contract_function_address + "&address=" + openkey + "&tag=latest&apikey=" + option_etherscan_api_key,
-				dataType: 'json',
-
-				success: function (d) {
-					amount = Web3.utils.fromWei(d.result, "ether");
-					$(".balacnetokensnocss").html(amount);
-					$("#sk").val(amount);
-					$("#skoko").val(amount);
-
-					$("#balance_tokens").html(parseFloat(amount).toFixed(2) + " WBT");
-					if (amount > 0) {
-						// $(".onlyhavetoken").show();
-						// $(".onlynohavetoken").hide();
+				$(".balacnetokensnocss").html(d.token);
+					$("#sk").val(d.token);
+					if (!$("#skoko").val()) {
+						$("#skoko").val(d.token);
 					}
-				}
-			});
-		}
 
-		// get gas price
-		$.ajax({
-			type: "GET",
-			url: urlApi + "/api?module=proxy&action=eth_gasPrice&apikey=" + option_etherscan_api_key,
-			dataType: 'json',
+					$("#balance_tokens").html(parseFloat(d.token).toFixed(2) + " WBT");
 
-			success: function (d) {
-				gasPrice = d.result;
-				console.log("Network gas price: ", gasPrice, " ", Web3.utils.fromWei(d.result, "gwei") + "GWei");
+					if (parseFloat(d.token) > 0.0) {
+						$(".onlyhavetoken").show();
+						$(".onlynohavetoken").hide();
+					}
+
 			}
-		});
-
-
-		$.get(urlApi + "/api?module=transaction&action=getstatus&txhash=" + openkey + "&apikey=" + option_etherscan_api_key, function (d) {
-			console.log(d);
 		});
 
 		rebuild_buttons();
@@ -288,6 +307,8 @@
 		if (parseFloat($("#price_usd").html()) > 0) {
 			$("#usdfor100hmq").html(teth * parseFloat($("#price_usd").html()));
 		}
+
+		validateBuyConsole();
 
 		rebuild_buttons();
 	}
@@ -645,238 +666,6 @@
 			});
 		}
 	}
-
-	ERC20ABI = [{
-		"constant": true,
-		"inputs": [],
-		"name": "name",
-		"outputs": [{
-			"name": "",
-			"type": "string"
-		}],
-		"type": "function"
-	}, {
-		"constant": true,
-		"inputs": [],
-		"name": "totalSupply",
-		"outputs": [{
-			"name": "",
-			"type": "uint256"
-		}],
-		"type": "function"
-	}, {
-		"constant": false,
-		"inputs": [{
-			"name": "JobDescription",
-			"type": "string"
-		}],
-		"name": "newIncome",
-		"outputs": [{
-			"name": "result",
-			"type": "string"
-		}],
-		"type": "function"
-	}, {
-		"constant": true,
-		"inputs": [],
-		"name": "decimals",
-		"outputs": [{
-			"name": "",
-			"type": "uint8"
-		}],
-		"type": "function"
-	}, {
-		"constant": false,
-		"inputs": [{
-			"name": "myposition",
-			"type": "bool"
-		}],
-		"name": "ivote",
-		"outputs": [{
-			"name": "result",
-			"type": "uint256"
-		}],
-		"type": "function"
-	}, {
-		"constant": true,
-		"inputs": [],
-		"name": "Entropy",
-		"outputs": [{
-			"name": "",
-			"type": "uint256"
-		}],
-		"type": "function"
-	}, {
-		"constant": true,
-		"inputs": [],
-		"name": "sellPrice",
-		"outputs": [{
-			"name": "",
-			"type": "uint256"
-		}],
-		"type": "function"
-	}, {
-		"constant": false,
-		"inputs": [{
-			"name": "JobDescription",
-			"type": "string"
-		}],
-		"name": "newProposal",
-		"outputs": [{
-			"name": "result",
-			"type": "string"
-		}],
-		"type": "function"
-	}, {
-		"constant": false,
-		"inputs": [],
-		"name": "setPrices",
-		"outputs": [],
-		"type": "function"
-	}, {
-		"constant": true,
-		"inputs": [{
-			"name": "",
-			"type": "address"
-		}],
-		"name": "balanceOf",
-		"outputs": [{
-			"name": "",
-			"type": "uint256"
-		}],
-		"type": "function"
-	}, {
-		"constant": true,
-		"inputs": [],
-		"name": "buyPrice",
-		"outputs": [{
-			"name": "",
-			"type": "uint256"
-		}],
-		"type": "function"
-	}, {
-		"constant": true,
-		"inputs": [],
-		"name": "owner",
-		"outputs": [{
-			"name": "",
-			"type": "address"
-		}],
-		"type": "function"
-	}, {
-		"constant": true,
-		"inputs": [],
-		"name": "symbol",
-		"outputs": [{
-			"name": "",
-			"type": "string"
-		}],
-		"type": "function"
-	}, {
-		"constant": true,
-		"inputs": [{
-			"name": "",
-			"type": "address"
-		}],
-		"name": "voters",
-		"outputs": [{
-			"name": "",
-			"type": "uint256"
-		}],
-		"type": "function"
-	}, {
-		"constant": false,
-		"inputs": [{
-			"name": "_to",
-			"type": "address"
-		}, {
-			"name": "_value",
-			"type": "uint256"
-		}],
-		"name": "transfer",
-		"outputs": [],
-		"type": "function"
-	}, {
-		"constant": true,
-		"inputs": [],
-		"name": "ownbalance",
-		"outputs": [{
-			"name": "",
-			"type": "uint256"
-		}],
-		"type": "function"
-	}, {
-		"constant": false,
-		"inputs": [{
-			"name": "amount",
-			"type": "uint256"
-		}],
-		"name": "sell",
-		"outputs": [],
-		"type": "function"
-	}, {
-		"constant": false,
-		"inputs": [],
-		"name": "token",
-		"outputs": [],
-		"type": "function"
-	}, {
-		"anonymous": false,
-		"inputs": [{
-			"indexed": true,
-			"name": "from",
-			"type": "address"
-		}, {
-			"indexed": true,
-			"name": "to",
-			"type": "address"
-		}, {
-			"indexed": false,
-			"name": "value",
-			"type": "uint256"
-		}],
-		"name": "Transfer",
-		"type": "event"
-	}, {
-		"anonymous": false,
-		"inputs": [{
-			"indexed": false,
-			"name": "amount",
-			"type": "uint256"
-		}, {
-			"indexed": false,
-			"name": "description",
-			"type": "string"
-		}],
-		"name": "newincomelog",
-		"type": "event"
-	}, {
-		"anonymous": false,
-		"inputs": [{
-			"indexed": false,
-			"name": "description",
-			"type": "string"
-		}],
-		"name": "newProposallog",
-		"type": "event"
-	}, {
-		"anonymous": false,
-		"inputs": [{
-			"indexed": false,
-			"name": "position",
-			"type": "bool"
-		}, {
-			"indexed": false,
-			"name": "voter",
-			"type": "address"
-		}, {
-			"indexed": false,
-			"name": "sharesonhand",
-			"type": "uint256"
-		}],
-		"name": "votelog",
-		"type": "event"
-	}];
 
 	function fetchTransactionLog(address) {
 		$.ajax({
